@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{self, Read};
 
 fn read_file() -> io::Result<String> {
-    let mut file = File::open("input/day1x.txt")?;
+    let mut file = File::open("./input/day1.txt")?;
     let mut contents = String::new();
 
     file.read_to_string(&mut contents)?;
