@@ -9,18 +9,17 @@ fn read_file() -> io::Result<String> {
     return Ok(contents);
 }
 
-fn bubble_sort(mut array_list: [i32; 5]) -> [i32; 5] {
-    let max = array_list.len();
+fn bubble_sort(mut vec: Vec<i32>) -> Vec<i32> {
+    let max = vec.len();
     let mut temp: i32;
     let mut swapped: bool;
-
     for i in 0..max - 1 {
         swapped = false;
         for j in 0..max - i - 1 {
-            if array_list[j] > array_list[j + 1] {
-                temp = array_list[j];
-                array_list[j] = array_list[j + 1];
-                array_list[j + 1] = temp;
+            if vec[j] > vec[j + 1] {
+                temp = vec[j];
+                vec[j] = vec[j + 1];
+                vec[j + 1] = temp;
                 swapped = true;
             }
         }
@@ -28,7 +27,7 @@ fn bubble_sort(mut array_list: [i32; 5]) -> [i32; 5] {
             break;
         }
     }
-    return array_list;
+    return vec;
 }
 
 fn main() {
@@ -41,7 +40,7 @@ fn main() {
         Err(e) => println!("Error: {}", e),
     }
 
-    let an_array = [3, 2, 9, 4, 1];
-    let sorted_array = bubble_sort(an_array);
-    println!("Bubbly {:?}", sorted_array)
+    let vec = vec![1, 4, 5, 13, 69, 40, 17, 0, -1];
+    let sorted = bubble_sort(vec);
+    println!("Bubbly {:?}", sorted)
 }
