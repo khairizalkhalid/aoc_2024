@@ -9,12 +9,12 @@ fn read_file() -> io::Result<String> {
     return Ok(contents);
 }
 
-fn bozo_sort(mut array_list: [i32; 5]) -> [i32; 5] {
+fn bubble_sort(mut array_list: [i32; 5]) -> [i32; 5] {
     let max = array_list.len();
     let mut temp: i32;
     let mut swapped: bool;
 
-    for i in 0..max {
+    for i in 0..max - 1 {
         swapped = false;
         for j in 0..max - i - 1 {
             if array_list[j] > array_list[j + 1] {
@@ -23,10 +23,9 @@ fn bozo_sort(mut array_list: [i32; 5]) -> [i32; 5] {
                 array_list[j + 1] = temp;
                 swapped = true;
             }
-
-            if !swapped {
-                break;
-            }
+        }
+        if !swapped {
+            break;
         }
     }
     return array_list;
@@ -43,6 +42,6 @@ fn main() {
     }
 
     let an_array = [3, 2, 9, 4, 1];
-    let sorted_array = bozo_sort(an_array);
+    let sorted_array = bubble_sort(an_array);
     println!("Bubbly {:?}", sorted_array)
 }
