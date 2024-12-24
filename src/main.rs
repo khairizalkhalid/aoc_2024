@@ -39,8 +39,4 @@ fn main() {
         Ok(contents) => println!("{}", contents),
         Err(e) => println!("Error: {}", e),
     }
-
-    let vec = vec![1, 4, 5, 13, 69, 40, 17, 0, -1];
-    let sorted = bubble_sort(vec);
-    println!("Bubbly {:?}", sorted)
 }
