@@ -36,7 +36,10 @@ fn main() {
     let contents = read_file();
 
     match contents {
-        Ok(contents) => println!("{}", contents),
+        Ok(contents) => {
+            let lines: Vec<&str> = contents.lines().collect();
+            println!("{:?}", lines);
+        }
         Err(e) => println!("Error: {}", e),
     }
 }
