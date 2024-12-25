@@ -1,4 +1,5 @@
 use std::fs::File;
+use std::i32;
 use std::io::{self, Read};
 
 fn read_file() -> io::Result<String> {
@@ -7,6 +8,27 @@ fn read_file() -> io::Result<String> {
 
     file.read_to_string(&mut contents)?;
     return Ok(contents);
+}
+
+fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
+    let lines: Vec<&str> = contents.lines().collect();
+
+    let mut vec1 = Vec::new();
+    let mut vec2 = Vec::new();
+
+    for line in lines {
+        let items: Vec<&str> = line.split_whitespace().collect();
+        if items.len() == 2 {
+            if let Ok(item1) = items[0].parse::<i32>() {
+                vec1.push(item1);
+            }
+            if let Ok(item2) = items[1].parse::<i32>() {
+                vec2.push(item2);
+            }
+        }
+    }
+
+    (vec1, vec2)
 }
 
 fn bubble_sort(mut vec: Vec<i32>) -> Vec<i32> {
@@ -37,8 +59,9 @@ fn main() {
 
     match contents {
         Ok(contents) => {
-            let lines: Vec<&str> = contents.lines().collect();
-            println!("{:?}", lines);
+            let (vec1, vec2) = split_contents_into_two_vectors(&contents);
+            println!("vec1, {:?}", vec1);
+            println!("vec2, {:?}", vec2);
         }
         Err(e) => println!("Error: {}", e),
     }
