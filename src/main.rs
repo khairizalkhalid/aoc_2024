@@ -62,6 +62,10 @@ fn main() {
             let (vec1, vec2) = split_contents_into_two_vectors(&contents);
             println!("vec1, {:?}", vec1);
             println!("vec2, {:?}", vec2);
+            let sort_vec1 = bubble_sort(vec1);
+            let sort_vec2 = bubble_sort(vec2);
+            println!("sort_vec1, {:?}", sort_vec1);
+            println!("sort_vec2, {:?}", sort_vec2);
         }
         Err(e) => println!("Error: {}", e),
     }
