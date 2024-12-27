@@ -58,6 +58,12 @@ fn calculate_distance_of_two_vectors(vec1: Vec<i32>, vec2: Vec<i32>) -> Vec<i32>
     return distance_vec;
 }
 
+fn sum_of_vector(vec: Vec<i32>) -> i32 {
+    let total: i32 = 0;
+    //TODO
+    return total;
+}
+
 fn main() {
     println!("Hello, world!");
 
@@ -69,6 +75,8 @@ fn main() {
             let sort_vec1 = bubble_sort(vec1);
             let sort_vec2 = bubble_sort(vec2);
             let distance_vec = calculate_distance_of_two_vectors(sort_vec1, sort_vec2);
+            let total_distance = sum_of_vector(distance_vec);
+            println!("{}", total_distance);
         }
         Err(e) => println!("Error: {}", e),
     }
