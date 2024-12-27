@@ -52,6 +52,12 @@ fn bubble_sort(mut vec: Vec<i32>) -> Vec<i32> {
     return vec;
 }
 
+fn calculate_distance_of_two_vectors(vec1: Vec<i32>, vec2: Vec<i32>) -> Vec<i32> {
+    let distance_vec = Vec::new();
+    //TODO
+    return distance_vec;
+}
+
 fn main() {
     println!("Hello, world!");
 
@@ -60,12 +66,9 @@ fn main() {
     match contents {
         Ok(contents) => {
             let (vec1, vec2) = split_contents_into_two_vectors(&contents);
-            println!("vec1, {:?}", vec1);
-            println!("vec2, {:?}", vec2);
             let sort_vec1 = bubble_sort(vec1);
             let sort_vec2 = bubble_sort(vec2);
-            println!("sort_vec1, {:?}", sort_vec1);
-            println!("sort_vec2, {:?}", sort_vec2);
+            let distance_vec = calculate_distance_of_two_vectors(sort_vec1, sort_vec2);
         }
         Err(e) => println!("Error: {}", e),
     }
