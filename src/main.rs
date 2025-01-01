@@ -5,14 +5,12 @@ use std::io::{self, Read};
 fn read_file() -> io::Result<String> {
     let mut file = File::open("./input/day1.txt")?;
     let mut contents = String::new();
-
     file.read_to_string(&mut contents)?;
-    return Ok(contents);
+    Ok(contents)
 }
 
 fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
     let lines: Vec<&str> = contents.lines().collect();
-
     let mut vec1 = Vec::new();
     let mut vec2 = Vec::new();
 
@@ -49,7 +47,7 @@ fn bubble_sort(mut vec: Vec<i32>) -> Vec<i32> {
             break;
         }
     }
-    return vec;
+    vec
 }
 
 fn calculate_distance_of_two_vectors(vec1: Vec<i32>, vec2: Vec<i32>) -> Vec<i32> {
@@ -71,15 +69,13 @@ fn sum_of_vector(vec: Vec<i32>) -> i32 {
     for i in 0..max {
         total += vec[i]
     }
-    return total;
+    total
 }
 
 fn main() {
     println!("Hello, world!");
 
-    let contents = read_file();
-
-    match contents {
+    match read_file() {
         Ok(contents) => {
             let (vec1, vec2) = split_contents_into_two_vectors(&contents);
             let sort_vec1 = bubble_sort(vec1);
