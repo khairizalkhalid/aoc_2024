@@ -53,8 +53,15 @@ fn bubble_sort(mut vec: Vec<i32>) -> Vec<i32> {
 }
 
 fn calculate_distance_of_two_vectors(vec1: Vec<i32>, vec2: Vec<i32>) -> Vec<i32> {
-    let distance_vec = Vec::new();
-    //TODO
+    let mut distance_vec = Vec::new();
+    if vec1.len() != vec2.len() {
+        return distance_vec;
+    }
+    let max = vec1.len();
+    for i in 0..max {
+        let distance = (vec1[i] - vec2[i]).abs();
+        distance_vec.push(distance);
+    }
     return distance_vec;
 }
 
