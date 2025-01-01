@@ -66,8 +66,11 @@ fn calculate_distance_of_two_vectors(vec1: Vec<i32>, vec2: Vec<i32>) -> Vec<i32>
 }
 
 fn sum_of_vector(vec: Vec<i32>) -> i32 {
-    let total: i32 = 0;
-    //TODO
+    let mut total: i32 = 0;
+    let max = vec.len();
+    for i in 0..max {
+        total += vec[i]
+    }
     return total;
 }
 
