@@ -29,6 +29,7 @@ fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
     (vec1, vec2)
 }
 
+// My own implementation to buble sort. Improved sorting should be using the rust default sort.
 fn bubble_sort(mut vec: Vec<i32>) -> Vec<i32> {
     let max = vec.len();
     let mut temp: i32;
@@ -79,10 +80,10 @@ fn main() {
         Ok(contents) => {
             let start = Instant::now();
 
-            let (vec1, vec2) = split_contents_into_two_vectors(&contents);
-            let sort_vec1 = bubble_sort(vec1);
-            let sort_vec2 = bubble_sort(vec2);
-            let distance_vec = calculate_distance_of_two_vectors(sort_vec1, sort_vec2);
+            let (mut vec1, mut vec2) = split_contents_into_two_vectors(&contents);
+            vec1.sort();
+            vec2.sort();
+            let distance_vec = calculate_distance_of_two_vectors(vec1, vec2);
             let total_distance = sum_of_vector(distance_vec);
             println!("{}", total_distance);
 
