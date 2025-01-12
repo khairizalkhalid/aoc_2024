@@ -11,11 +11,10 @@ fn read_file() -> io::Result<String> {
 }
 
 fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
-    let lines: Vec<&str> = contents.lines().collect();
     let mut vec1 = Vec::new();
     let mut vec2 = Vec::new();
 
-    for line in lines {
+    for line in contents.lines() {
         let items: Vec<&str> = line.split_whitespace().collect();
         if items.len() == 2 {
             if let Ok(item1) = items[0].parse::<i32>() {
