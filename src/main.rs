@@ -30,6 +30,7 @@ fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
 }
 
 // My own implementation to buble sort. Improved sorting should be using the rust default sort.
+#[allow(dead_code)]
 fn bubble_sort(mut vec: Vec<i32>) -> Vec<i32> {
     let max = vec.len();
     let mut temp: i32;
