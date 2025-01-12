@@ -65,6 +65,8 @@ fn calculate_distance_of_two_vectors(vec1: Vec<i32>, vec2: Vec<i32>) -> Vec<i32>
     return distance_vec;
 }
 
+// my implementation to sum in a vector. Improved version should be using rust iter sum
+#[allow(dead_code)]
 fn sum_of_vector(vec: Vec<i32>) -> i32 {
     let mut total: i32 = 0;
     let max = vec.len();
@@ -85,7 +87,7 @@ fn main() {
             vec1.sort();
             vec2.sort();
             let distance_vec = calculate_distance_of_two_vectors(vec1, vec2);
-            let total_distance = sum_of_vector(distance_vec);
+            let total_distance: i32 = distance_vec.iter().sum();
             println!("{}", total_distance);
 
             let duration = start.elapsed();
