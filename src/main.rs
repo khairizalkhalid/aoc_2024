@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::i32;
 use std::io::{self, Read};
+use std::time::Instant;
 
 fn read_file() -> io::Result<String> {
     let mut file = File::open("./input/day1.txt")?;
@@ -77,12 +78,17 @@ fn main() {
 
     match read_file() {
         Ok(contents) => {
+            let start = Instant::now();
+
             let (vec1, vec2) = split_contents_into_two_vectors(&contents);
             let sort_vec1 = bubble_sort(vec1);
             let sort_vec2 = bubble_sort(vec2);
             let distance_vec = calculate_distance_of_two_vectors(sort_vec1, sort_vec2);
             let total_distance = sum_of_vector(distance_vec);
             println!("{}", total_distance);
+
+            let duration = start.elapsed();
+            println!("Time elapsed: {:?}", duration);
         }
         Err(e) => println!("Error: {}", e),
     }
