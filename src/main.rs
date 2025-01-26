@@ -12,6 +12,7 @@ fn main() {
     let day = &args[1];
     match day.as_str() {
         "d1p1" => days::day1_part1::run(),
+        "d1p2" => days::day1_part2::run(),
         _ => eprint!("Program {} is not available.\n", day),
     }
 }
