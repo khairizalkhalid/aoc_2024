@@ -1,3 +1,3 @@
 pub fn run() {
-    print!("monkaHmm\n");
+    println!("monkaHmm");
 }
