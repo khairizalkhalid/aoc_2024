@@ -71,6 +71,11 @@ fn sum_of_vector(vec: Vec<i32>) -> i32 {
 }
 
 pub fn run() {
+    //read file
+    //seperate into to vector: vec1 and vec2
+    //sort each vector
+    //calculate distance between vec1 and vec2 and add into vec3
+    //calculate sum of vec3
     match read_file() {
         Ok(contents) => {
             let start = Instant::now();
