@@ -3,14 +3,14 @@ use std::i32;
 use std::io::{self, Read};
 use std::time::Instant;
 
-fn read_file() -> io::Result<String> {
+pub fn read_file() -> io::Result<String> {
     let mut file = File::open("./input/day1.txt")?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
     Ok(contents)
 }
 
-fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
+pub fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
     let mut vec1 = Vec::new();
     let mut vec2 = Vec::new();
 
