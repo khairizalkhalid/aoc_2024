@@ -25,7 +25,8 @@ fn main() {
     match day.as_str() {
         "d1p1" => time_elapsed_wrapper(|| days::day1_part1::run()),
         "d1p2" => time_elapsed_wrapper(|| days::day1_part2::run()),
-        "d2" => time_elapsed_wrapper(|| days::day2::run()),
+        "d2t" => time_elapsed_wrapper(|| days::day2_part1::test_run()),
+        "d2p1" => time_elapsed_wrapper(|| days::day2_part1::run()),
         _ => eprintln!("Program {} is not available.", day),
     }
 }
