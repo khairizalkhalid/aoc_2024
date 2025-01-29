@@ -11,14 +11,11 @@ pub fn run() {
     // the end sum all vec1
     match utils::file_reader::read_file("day1.txt") {
         Ok(contents) => {
-            let mut final_vec: Vec<i32> = Vec::new();
             let (vec1, vec2) = day1_part1::split_contents_into_two_vectors(&contents);
-            for cur in vec1 {
-                let count = vec2.iter().filter(|a| **a == cur).count() as i32;
-                final_vec.push(cur * count)
-            }
-
-            let total: i32 = final_vec.iter().sum();
+            let total: i32 = vec1
+                .iter()
+                .map(|&a| a * vec2.iter().filter(|&&b| b == a).count() as i32)
+                .sum();
             println!("{:?}", total)
         }
         Err(e) => println!("Error: {}", e),
