@@ -6,17 +6,17 @@ enum Safety {
 
 #[derive(PartialEq, Eq)]
 enum Direction {
+    None,
     Positive,
     Negative,
 }
 
 fn safety_check(readings: Vec<i32>) -> bool {
-    let max: usize = (readings.len() - 1).try_into().unwrap();
-    let mut direction: Direction = Direction::Positive;
+    let mut direction: Direction = Direction::None;
     let mut safety: Safety = Safety::Safe;
-    for i in 0..max {
-        let r = readings[i];
-        let next_r = readings[i + 1];
+    for window in readings.windows(2) {
+        let r = window[0];
+        let next_r = window[1];
         let safe_range: i32 = r - next_r;
         let abs_range = safe_range.abs();
 
@@ -25,11 +25,11 @@ fn safety_check(readings: Vec<i32>) -> bool {
             break;
         }
 
-        if i == 0 {
-            if r > next_r {
-                direction = Direction::Positive;
+        if direction == Direction::None {
+            direction = if r > next_r {
+                Direction::Positive
             } else {
-                direction = Direction::Negative;
+                Direction::Negative
             }
         } else if (direction == Direction::Negative && r > next_r)
             || (direction == Direction::Positive && next_r > r)
