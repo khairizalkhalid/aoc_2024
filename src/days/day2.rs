@@ -1,33 +1,44 @@
-const SAFE: bool = true;
-const POSITIVE: bool = true;
+#[derive(PartialEq, Eq)]
+enum Safety {
+    Safe,
+    Unsafe,
+}
+
+#[derive(PartialEq, Eq)]
+enum Direction {
+    Positive,
+    Negative,
+}
 
 fn safety_check(vec_z: Vec<i32>) -> bool {
     let max: usize = (vec_z.len() - 1).try_into().unwrap();
-    let mut direction: bool = POSITIVE;
-    let mut safety: bool = SAFE;
+    let mut direction: Direction = Direction::Positive;
+    let mut safety: Safety = Safety::Safe;
     for i in 0..max {
         let z = vec_z[i];
         let next_z = vec_z[i + 1];
 
         if i == 0 {
             if z > next_z {
-                direction = POSITIVE
+                direction = Direction::Positive;
             } else {
-                direction = !POSITIVE
+                direction = Direction::Negative;
             }
-        } else if (direction == !POSITIVE && z > next_z) || (direction == POSITIVE && next_z > z) {
-            safety = !SAFE;
+        } else if (direction == Direction::Negative && z > next_z)
+            || (direction == Direction::Positive && next_z > z)
+        {
+            safety = Safety::Unsafe;
             break;
         }
 
         let safe_range: i32 = z - next_z;
         let abs_range = safe_range.abs();
         if abs_range > 3 || abs_range == 0 {
-            safety = !SAFE;
+            safety = Safety::Unsafe;
             break;
         }
     }
-    safety
+    safety == Safety::Safe
 }
 
 pub fn run() {
