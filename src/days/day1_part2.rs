@@ -1,5 +1,6 @@
-use crate::days::day1_part1;
 use std::i32;
+
+use crate::{days::day1_part1, utils};
 
 pub fn run() {
     // first index: iterate thru to find equal number (call it cur)
@@ -8,7 +9,7 @@ pub fn run() {
     // replace cur with score
     // repeate for each vec1...
     // the end sum all vec1
-    match day1_part1::read_file() {
+    match utils::file_reader::read_file("day1.txt") {
         Ok(contents) => {
             let mut final_vec: Vec<i32> = Vec::new();
             let (vec1, vec2) = day1_part1::split_contents_into_two_vectors(&contents);

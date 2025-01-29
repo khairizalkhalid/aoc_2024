@@ -2,6 +2,7 @@ use std::env;
 use std::time::Instant;
 
 mod days;
+mod utils;
 
 fn time_elapsed_wrapper<F>(proc: F)
 where

@@ -1,13 +1,4 @@
-use std::fs::File;
-use std::i32;
-use std::io::{self, Read};
-
-pub fn read_file() -> io::Result<String> {
-    let mut file = File::open("./input/day1.txt")?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-    Ok(contents)
-}
+use crate::utils;
 
 pub fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
     let mut vec1 = Vec::new();
@@ -75,7 +66,7 @@ pub fn run() {
     //sort each vector
     //calculate distance between vec1 and vec2 and add into vec3
     //calculate sum of vec3
-    match read_file() {
+    match utils::file_reader::read_file("day1.txt") {
         Ok(contents) => {
             let (mut vec1, mut vec2) = split_contents_into_two_vectors(&contents);
             vec1.sort();
