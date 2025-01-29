@@ -53,26 +53,19 @@ pub fn run() {
     // - second loop: check (isIncreasing && safeRange < 0) || (!isIncreasing && safeRange > 0): return unsafe
     // - return safe
     // count safe in Z
-    let test1 = vec![7, 6, 4, 2, 1];
-    let test2 = vec![1, 2, 7, 8, 9];
-    let test3 = vec![9, 7, 6, 2, 1];
-    let test4 = vec![1, 3, 2, 4, 5];
-    let test5 = vec![8, 6, 4, 4, 1];
-    let test6 = vec![1, 3, 6, 7, 9];
+    let test_case = vec![
+        vec![7, 6, 4, 2, 1],
+        vec![1, 2, 7, 8, 9],
+        vec![9, 7, 6, 2, 1],
+        vec![1, 3, 2, 4, 5],
+        vec![8, 6, 4, 4, 1],
+        vec![1, 3, 6, 7, 9],
+    ];
 
-    let mut vec_zz: Vec<Vec<i32>> = Vec::new();
-    let mut result: Vec<bool> = Vec::new();
-
-    vec_zz.push(test1);
-    vec_zz.push(test2);
-    vec_zz.push(test3);
-    vec_zz.push(test4);
-    vec_zz.push(test5);
-    vec_zz.push(test6);
-
-    vec_zz
+    let result: Vec<bool> = test_case
         .iter()
-        .for_each(|vec_z| result.push(safety_check(vec_z.to_vec())));
+        .map(|vec_z| safety_check(vec_z.to_vec()))
+        .collect();
     println!("{:?}", result);
     println!("{:?}", result.iter().filter(|&&r| r).count());
 }
