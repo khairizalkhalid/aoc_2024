@@ -1,7 +1,6 @@
 use std::fs::File;
 use std::i32;
 use std::io::{self, Read};
-use std::time::Instant;
 
 pub fn read_file() -> io::Result<String> {
     let mut file = File::open("./input/day1.txt")?;
@@ -78,17 +77,12 @@ pub fn run() {
     //calculate sum of vec3
     match read_file() {
         Ok(contents) => {
-            let start = Instant::now();
-
             let (mut vec1, mut vec2) = split_contents_into_two_vectors(&contents);
             vec1.sort();
             vec2.sort();
             let distance_vec = calculate_distance_of_two_vectors(vec1, vec2);
             let total_distance: i32 = distance_vec.iter().sum();
             println!("{}", total_distance);
-
-            let duration = start.elapsed();
-            println!("Time elapsed: {:?}", duration);
         }
         Err(e) => println!("Error: {}", e),
     }

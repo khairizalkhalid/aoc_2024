@@ -1,6 +1,17 @@
 use std::env;
+use std::time::Instant;
 
 mod days;
+
+fn time_elapsed_wrapper<F>(proc: F)
+where
+    F: FnOnce(),
+{
+    let start = Instant::now();
+    proc();
+    let duration = start.elapsed();
+    println!("Time elapsed: {:?}", duration);
+}
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -11,8 +22,8 @@ fn main() {
 
     let day = &args[1];
     match day.as_str() {
-        "d1p1" => days::day1_part1::run(),
-        "d1p2" => days::day1_part2::run(),
+        "d1p1" => time_elapsed_wrapper(|| days::day1_part1::run()),
+        "d1p2" => time_elapsed_wrapper(|| days::day1_part2::run()),
         _ => eprintln!("Program {} is not available.", day),
     }
 }
