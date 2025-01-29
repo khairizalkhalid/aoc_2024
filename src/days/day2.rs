@@ -1,3 +1,5 @@
+use crate::utils;
+
 #[derive(PartialEq, Eq)]
 enum Safety {
     Safe,
@@ -86,4 +88,15 @@ pub fn run() {
     // - second loop: check (isIncreasing && safeRange < 0) || (!isIncreasing && safeRange > 0): return unsafe
     // - return safe
     // count safe in Z
+    match utils::file_reader::read_file("day2.txt") {
+        Ok(contents) => {
+            let readings_vector = get_readings_vector(&contents);
+            let result: Vec<bool> = readings_vector
+                .iter()
+                .map(|vec_z| safety_check(vec_z.to_vec()))
+                .collect();
+            println!("{:?}", result.iter().filter(|&&r| r).count());
+        }
+        Err(e) => println!("Error: {}", e),
+    }
 }
