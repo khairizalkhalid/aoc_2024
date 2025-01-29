@@ -10,28 +10,28 @@ enum Direction {
     Negative,
 }
 
-fn safety_check(vec_z: Vec<i32>) -> bool {
-    let max: usize = (vec_z.len() - 1).try_into().unwrap();
+fn safety_check(readings: Vec<i32>) -> bool {
+    let max: usize = (readings.len() - 1).try_into().unwrap();
     let mut direction: Direction = Direction::Positive;
     let mut safety: Safety = Safety::Safe;
     for i in 0..max {
-        let z = vec_z[i];
-        let next_z = vec_z[i + 1];
+        let r = readings[i];
+        let next_r = readings[i + 1];
 
         if i == 0 {
-            if z > next_z {
+            if r > next_r {
                 direction = Direction::Positive;
             } else {
                 direction = Direction::Negative;
             }
-        } else if (direction == Direction::Negative && z > next_z)
-            || (direction == Direction::Positive && next_z > z)
+        } else if (direction == Direction::Negative && r > next_r)
+            || (direction == Direction::Positive && next_r > r)
         {
             safety = Safety::Unsafe;
             break;
         }
 
-        let safe_range: i32 = z - next_z;
+        let safe_range: i32 = r - next_r;
         let abs_range = safe_range.abs();
         if abs_range > 3 || abs_range == 0 {
             safety = Safety::Unsafe;
