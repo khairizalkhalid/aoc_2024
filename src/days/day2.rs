@@ -30,13 +30,6 @@ fn safety_check(vec_z: Vec<i32>) -> bool {
     safety
 }
 
-//test result
-//7 6 4 2 1: Safe because the levels are all decreasing by 1 or 2.
-//1 2 7 8 9: Unsafe because 2 7 is an increase of 5.
-//9 7 6 2 1: Unsafe because 6 2 is a decrease of 4.
-//1 3 2 4 5: Unsafe because 1 3 is increasing but 3 2 is decreasing.
-//8 6 4 4 1: Unsafe because 4 4 is neither an increase or a decrease.
-//1 3 6 7 9: Safe because the levels are all increasing by 1, 2, or 3.
 pub fn run() {
     // convert data into a X of Y
     // repeat for each Y
@@ -54,12 +47,12 @@ pub fn run() {
     // - return safe
     // count safe in Z
     let test_case = vec![
-        vec![7, 6, 4, 2, 1],
-        vec![1, 2, 7, 8, 9],
-        vec![9, 7, 6, 2, 1],
-        vec![1, 3, 2, 4, 5],
-        vec![8, 6, 4, 4, 1],
-        vec![1, 3, 6, 7, 9],
+        vec![7, 6, 4, 2, 1], //Safe because the levels are all decreasing by 1 or 2.
+        vec![1, 2, 7, 8, 9], //Unsafe because 2 7 is an increase of 5.
+        vec![9, 7, 6, 2, 1], //Unsafe because 6 2 is a decrease of 4.
+        vec![1, 3, 2, 4, 5], //Unsafe because 1 3 is increasing but 3 2 is decreasing.
+        vec![8, 6, 4, 4, 1], //Unsafe because 4 4 is neither an increase or a decrease.
+        vec![1, 3, 6, 7, 9], //Safe because the levels are all increasing by 1, 2, or 3.
     ];
 
     let result: Vec<bool> = test_case
