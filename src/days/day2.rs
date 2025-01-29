@@ -17,6 +17,13 @@ fn safety_check(readings: Vec<i32>) -> bool {
     for i in 0..max {
         let r = readings[i];
         let next_r = readings[i + 1];
+        let safe_range: i32 = r - next_r;
+        let abs_range = safe_range.abs();
+
+        if abs_range > 3 || abs_range == 0 {
+            safety = Safety::Unsafe;
+            break;
+        }
 
         if i == 0 {
             if r > next_r {
@@ -27,13 +34,6 @@ fn safety_check(readings: Vec<i32>) -> bool {
         } else if (direction == Direction::Negative && r > next_r)
             || (direction == Direction::Positive && next_r > r)
         {
-            safety = Safety::Unsafe;
-            break;
-        }
-
-        let safe_range: i32 = r - next_r;
-        let abs_range = safe_range.abs();
-        if abs_range > 3 || abs_range == 0 {
             safety = Safety::Unsafe;
             break;
         }
