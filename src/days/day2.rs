@@ -11,6 +11,17 @@ enum Direction {
     Negative,
 }
 
+fn get_readings_vector(contents: &str) -> Vec<Vec<i32>> {
+    contents
+        .lines()
+        .map(|l| {
+            l.split_whitespace()
+                .map(|s| s.parse::<i32>().expect("Failed to parse to integer"))
+                .collect()
+        })
+        .collect()
+}
+
 fn safety_check(readings: Vec<i32>) -> bool {
     let mut direction: Direction = Direction::None;
     let mut safety: Safety = Safety::Safe;
