@@ -13,7 +13,7 @@ enum Direction {
     Negative,
 }
 
-fn get_readings_vector(contents: &str) -> Vec<Vec<i32>> {
+pub fn get_readings_vector(contents: &str) -> Vec<Vec<i32>> {
     contents
         .lines()
         .map(|l| {
@@ -24,7 +24,7 @@ fn get_readings_vector(contents: &str) -> Vec<Vec<i32>> {
         .collect()
 }
 
-fn safety_check(readings: Vec<i32>) -> bool {
+pub fn safety_check(readings: Vec<i32>) -> bool {
     let mut direction: Direction = Direction::None;
     let mut safety: Safety = Safety::Safe;
     for window in readings.windows(2) {
