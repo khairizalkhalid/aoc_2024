@@ -11,8 +11,15 @@ fn enhanced_safety_check(readings: &Vec<i32>) -> bool {
     if safety_check(readings.to_vec()) {
         return true;
     }
-    // TODO: do a iterator on this reading to remove each index and run safety_check again
-    safety_check(readings.to_vec())
+    for (i, _) in readings.iter().enumerate() {
+        let mut new_r = readings.to_vec();
+        new_r.remove(i);
+        let is_safe = safety_check(new_r.to_vec());
+        if is_safe {
+            return true;
+        }
+    }
+    false
 }
 
 pub fn run() {
