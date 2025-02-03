@@ -15,18 +15,14 @@ pub fn test_run() {
     let reg = Regex::new(r"mul\(\d+,\d+\)").unwrap();
     let reg_matches: Vec<_> = reg.find_iter(test_case).map(|m| m.as_str()).collect();
 
-    let numbers: Vec<Vec<i32>> = reg_matches
+    let products: Vec<i32> = reg_matches
         .iter()
         .filter_map(|m| {
             m.strip_prefix("mul(")
                 .and_then(|s| s.strip_suffix(")"))
-                .map(|s| {
-                    s.split(',')
-                        .map(|n| n.parse::<i32>().unwrap())
-                        .collect::<Vec<i32>>()
-                })
+                .map(|s| s.split(',').map(|n| n.parse::<i32>().unwrap()).product())
         })
         .collect();
 
-    println!("{:?}", numbers)
+    println!("{:?}", products)
 }
