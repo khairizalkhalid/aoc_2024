@@ -6,7 +6,7 @@ fn sum_of_muls(mul_string: &str) -> i32 {
     let reg = Regex::new(r"mul\(\d+,\d+\)").unwrap();
     let reg_matches: Vec<_> = reg.find_iter(mul_string).map(|m| m.as_str()).collect();
 
-    let sum_of_products: i32 = reg_matches
+    reg_matches
         .iter()
         .filter_map(|m| {
             m.strip_prefix("mul(")
@@ -17,9 +17,7 @@ fn sum_of_muls(mul_string: &str) -> i32 {
                         .product::<i32>()
                 })
         })
-        .sum();
-
-    sum_of_products
+        .sum()
 }
 
 pub fn test_run() {
