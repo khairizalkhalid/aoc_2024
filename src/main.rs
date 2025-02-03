@@ -29,6 +29,7 @@ fn main() {
         "d2p1" => time_elapsed_wrapper(|| days::day2_part1::run()),
         "d2p2" => time_elapsed_wrapper(|| days::day2_part2::run()),
         "d3pt" => time_elapsed_wrapper(|| days::day3_part1::test_run()),
+        "d3p1" => time_elapsed_wrapper(|| days::day3_part1::run()),
         _ => eprintln!("Program {} is not available.", day),
     }
 }

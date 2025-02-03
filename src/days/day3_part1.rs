@@ -1,5 +1,7 @@
 use regex::Regex;
 
+use crate::utils;
+
 fn sum_of_muls(mul_string: &str) -> i32 {
     let reg = Regex::new(r"mul\(\d+,\d+\)").unwrap();
     let reg_matches: Vec<_> = reg.find_iter(mul_string).map(|m| m.as_str()).collect();
@@ -21,6 +23,11 @@ fn sum_of_muls(mul_string: &str) -> i32 {
 }
 
 pub fn test_run() {
+    let test_case = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
+    println!("{:?}", sum_of_muls(test_case));
+}
+
+pub fn run() {
     // split string by regex exp `mul\(\d+,\d+\)`
     // for each set of string
     // remove the word 'mul'
@@ -29,7 +36,8 @@ pub fn test_run() {
     // calculate multiplication between the two i32
     // push to a new vec
     // then iter sum it up.
-
-    let test_case = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
-    println!("{:?}", sum_of_muls(test_case));
+    match utils::file_reader::read_file("day3.txt") {
+        Ok(contents) => println!("{:?}", sum_of_muls(&contents)),
+        Err(e) => println!("Err: {}", e),
+    }
 }
