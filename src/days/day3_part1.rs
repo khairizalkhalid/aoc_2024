@@ -2,7 +2,7 @@ use regex::Regex;
 
 use crate::utils;
 
-fn sum_of_muls(mul_string: &str) -> i32 {
+pub fn sum_of_muls(mul_string: &str) -> i32 {
     let reg = Regex::new(r"mul\(\d+,\d+\)").unwrap();
     let reg_matches: Vec<_> = reg.find_iter(mul_string).map(|m| m.as_str()).collect();
 
