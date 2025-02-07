@@ -1,3 +1,5 @@
+use crate::utils;
+
 const TARGET_WORD: &str = "XMAS";
 
 fn count_word(target_word: &str, input_vec: &Vec<Vec<char>>) -> i32 {
@@ -80,4 +82,17 @@ MXMXAXMASX";
         TARGET_WORD,
         count_word(TARGET_WORD, &str_coordinate)
     );
+}
+
+pub fn run() {
+    match utils::file_reader::read_file("day4.txt") {
+        Ok(contents) => println!(
+            "{:?}",
+            count_word(
+                TARGET_WORD,
+                &contents.lines().map(|l| l.chars().collect()).collect()
+            )
+        ),
+        Err(e) => println!("Err: {}", e),
+    }
 }
