@@ -10,5 +10,7 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX";
 
-    println!("test {}", test_str)
+    let mut coordinate: Vec<Vec<char>> = test_str.lines().map(|l| l.chars().collect()).collect();
+
+    println!("test {:?}", coordinate)
 }
