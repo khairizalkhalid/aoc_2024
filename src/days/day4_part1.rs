@@ -5,17 +5,16 @@ const TARGET_WORD: &str = "XMAS";
 fn count_word(target_word: &str, input_vec: &Vec<Vec<char>>) -> i32 {
     let target_chars: Vec<char> = target_word.chars().collect();
 
-    let count_vec: Vec<i32> = input_vec
+    input_vec
         .iter()
         .enumerate()
         .map(|(y_i, y)| {
             y.iter()
                 .enumerate()
                 .map(|(x_i, _)| count_match_chars(&target_chars, (x_i, y_i), input_vec))
-                .sum()
+                .sum::<i32>()
         })
-        .collect();
-    count_vec.iter().sum()
+        .sum()
 }
 
 fn count_match_chars(
