@@ -2,7 +2,7 @@ use crate::utils;
 
 const TARGET_WORD: &str = "XMAS";
 
-fn count_word(target_word: &str, input_vec: &Vec<Vec<char>>) -> i32 {
+fn count_word(target_word: &str, input_vec: &[Vec<char>]) -> i32 {
     let target_chars: Vec<char> = target_word.chars().collect();
 
     input_vec
@@ -18,9 +18,9 @@ fn count_word(target_word: &str, input_vec: &Vec<Vec<char>>) -> i32 {
 }
 
 fn count_match_chars(
-    target_chars: &Vec<char>,
+    target_chars: &[char],
     root_index: (usize, usize),
-    input_vec: &Vec<Vec<char>>,
+    input_vec: &[Vec<char>],
 ) -> i32 {
     // loop to check all of the direction
     let mut count = 0;
@@ -89,7 +89,10 @@ pub fn run() {
             "{:?}",
             count_word(
                 TARGET_WORD,
-                &contents.lines().map(|l| l.chars().collect()).collect()
+                &contents
+                    .lines()
+                    .map(|l| l.chars().collect())
+                    .collect::<Vec<_>>()
             )
         ),
         Err(e) => println!("Err: {}", e),
