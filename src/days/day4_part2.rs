@@ -1,3 +1,5 @@
+use crate::utils;
+
 const TARGET_WORD: &str = "MAS";
 
 fn count_word(target_word: &str, input_vec: &[Vec<char>]) -> i32 {
@@ -79,7 +81,8 @@ fn is_match_x(target_chars: &[char], root_index: (usize, usize), input_vec: &[Ve
     backslash_match && slash_match
 }
 
-pub fn run() {
+#[allow(dead_code)]
+pub fn test() {
     let test_str = "MMMSXXMASM
 MSAMXMSMSA
 AMXSXMAAMM
@@ -98,4 +101,20 @@ MXMXAXMASX";
         TARGET_WORD,
         count_word(TARGET_WORD, &str_coordinate)
     );
+}
+
+pub fn run() {
+    match utils::file_reader::read_file("day4.txt") {
+        Ok(contents) => println!(
+            "{:?}",
+            count_word(
+                TARGET_WORD,
+                &contents
+                    .lines()
+                    .map(|l| l.chars().collect())
+                    .collect::<Vec<_>>()
+            )
+        ),
+        Err(e) => println!("Err: {}", e),
+    }
 }
