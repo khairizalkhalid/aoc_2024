@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::env;
 use std::time::Instant;
 
@@ -22,19 +23,24 @@ fn main() {
     }
 
     let day = &args[1];
-    match day.as_str() {
-        "d1p1" => time_elapsed_wrapper(|| days::day1_part1::run()),
-        "d1p2" => time_elapsed_wrapper(|| days::day1_part2::run()),
-        "d2t" => time_elapsed_wrapper(|| days::day2_part1::test_run()),
-        "d2p1" => time_elapsed_wrapper(|| days::day2_part1::run()),
-        "d2p2" => time_elapsed_wrapper(|| days::day2_part2::run()),
-        "d3pt" => time_elapsed_wrapper(|| days::day3_part1::test_run()),
-        "d3p1" => time_elapsed_wrapper(|| days::day3_part1::run()),
-        "d3p2" => time_elapsed_wrapper(|| days::day3_part2::run()),
-        "d4pt" => time_elapsed_wrapper(|| days::day4_part1::test_run()),
-        "d4p1" => time_elapsed_wrapper(|| days::day4_part1::run()),
-        "d4p2" => time_elapsed_wrapper(|| days::day4_part2::run()),
-        "d5p1" => time_elapsed_wrapper(|| days::day5_part1::test_run()),
-        _ => eprintln!("Program {} is not available.", day),
+
+    let mut functions: HashMap<&str, fn()> = HashMap::new();
+    functions.insert("d1p1", || days::day1_part1::run());
+    functions.insert("d1p2", || days::day1_part2::run());
+    functions.insert("d2t", || days::day2_part1::test_run());
+    functions.insert("d2p1", || days::day2_part1::run());
+    functions.insert("d2p2", || days::day2_part2::run());
+    functions.insert("d3pt", || days::day3_part1::test_run());
+    functions.insert("d3p1", || days::day3_part1::run());
+    functions.insert("d3p2", || days::day3_part2::run());
+    functions.insert("d4pt", || days::day4_part1::test_run());
+    functions.insert("d4p1", || days::day4_part1::run());
+    functions.insert("d4p2", || days::day4_part2::run());
+    functions.insert("d5pt", || days::day5_part1::test_run());
+
+    if let Some(&function) = functions.get(day.as_str()) {
+        time_elapsed_wrapper(function);
+    } else {
+        eprintln!("Program {} is not available.", day);
     }
 }
