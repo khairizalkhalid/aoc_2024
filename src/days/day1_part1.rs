@@ -78,3 +78,38 @@ pub fn run() {
         Err(e) => println!("Error: {}", e),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_split_contents_into_two_vectors() {
+        let contents = "1 2\n3 4\n5 6";
+        let (vec1, vec2) = split_contents_into_two_vectors(contents);
+        assert_eq!(vec1, vec![1, 3, 5]);
+        assert_eq!(vec2, vec![2, 4, 6]);
+    }
+
+    #[test]
+    fn test_bubble_sort() {
+        let unsorted_vec = vec![3, 1, 4, 1, 5, 9];
+        let sorted_vec = bubble_sort(unsorted_vec.clone());
+        assert_eq!(sorted_vec, vec![1, 1, 3, 4, 5, 9]);
+    }
+
+    #[test]
+    fn test_calculate_distance_of_two_vectors() {
+        let vec1 = vec![1, 2, 3];
+        let vec2 = vec![3, 2, 1];
+        let distances = calculate_distance_of_two_vectors(vec1, vec2);
+        assert_eq!(distances, vec![2, 0, 2]);
+    }
+
+    #[test]
+    fn test_sum_of_vector() {
+        let vec = vec![1, 2, 3, 4, 5];
+        let sum = sum_of_vector(vec);
+        assert_eq!(sum, 15);
+    }
+}
