@@ -33,4 +33,46 @@ pub fn test_run() {
     // if violate break if ok add in new vec named is_ordered
     // iterate thru is_ordered and find only the middle index value
     // .sum() and print
+    // or ... just bruteforce the checking (fuck it)
+
+    let tuple_rule: Vec<(&str, &str)> = test_rules
+        .lines()
+        .map(|r| {
+            let parts: Vec<&str> = r.split('|').collect();
+            (parts[0], parts[1])
+        })
+        .collect();
+
+    let p_test: Vec<Vec<&str>> = test_check
+        .lines()
+        .into_iter()
+        .map(|l| l.split(",").collect())
+        .collect();
+
+    let mut all_follow_rules: Vec<Vec<&str>> = Vec::new();
+    p_test.iter().for_each(|pt| {
+        let mut is_follow_rule: Vec<bool> = vec![];
+        for i in 0..pt.len() {
+            for j in i..pt.len() {
+                let a = pt[i];
+                let b = pt[j];
+                for (tr_a, tr_b) in &tuple_rule {
+                    if *tr_a == a && *tr_b == b {
+                        is_follow_rule.push(true);
+                        break;
+                    }
+                }
+            }
+        }
+        // total of is_follow_rule pushed should be the same with total unique combination of pt
+        let expected_combinations = pt.len() * (pt.len() - 1) / 2;
+        if is_follow_rule.len() == expected_combinations {
+            all_follow_rules.push(pt.to_vec());
+        }
+    });
+
+    println!("{:?}", all_follow_rules);
+
+    // now find middle page number of all follow rules
+    // then calculate sum of that middle page
 }
