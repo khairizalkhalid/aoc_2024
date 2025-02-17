@@ -33,6 +33,7 @@ pub fn test_run() {
     // if violate break if ok add in new vec named is_ordered
     // iterate thru is_ordered and find only the middle index value
     // .sum() and print
+    //
     // or ... just bruteforce the checking (fuck it)
 
     let tuple_rule: Vec<(&str, &str)> = test_rules
@@ -52,19 +53,27 @@ pub fn test_run() {
     let mut all_follow_rules: Vec<Vec<&str>> = Vec::new();
     p_test.iter().for_each(|pt| {
         let mut is_follow_rule: Vec<bool> = vec![];
+        // check from i to each of the current pt against the rule
+        // ie:
+        // a vs b, a vs c, a vs d,
+        // b vs c, b vs d
+        // c vs d
         for i in 0..pt.len() {
             for j in i..pt.len() {
                 let a = pt[i];
                 let b = pt[j];
                 for (tr_a, tr_b) in &tuple_rule {
                     if *tr_a == a && *tr_b == b {
-                        is_follow_rule.push(true);
+                        is_follow_rule.push(true); // no need to check further, save time
                         break;
                     }
+                    // if all the rule is false, then no push
+                    // meaning if the is_follow_rule len is too short compared to the pt len (*)
                 }
             }
         }
-        // total of is_follow_rule pushed should be the same with total unique combination of pt
+        // *: total of is_follow_rule pushed should be the same with total unique combination of pt
+        // for the less means some of the pt iter did not follow the rule
         let expected_combinations = pt.len() * (pt.len() - 1) / 2;
         if is_follow_rule.len() == expected_combinations {
             all_follow_rules.push(pt.to_vec());
