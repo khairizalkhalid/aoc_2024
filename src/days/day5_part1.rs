@@ -80,8 +80,14 @@ pub fn test_run() {
         }
     });
 
-    println!("{:?}", all_follow_rules);
-
     // now find middle page number of all follow rules
     // then calculate sum of that middle page
+    let middle_page_sum: i32 = all_follow_rules
+        .iter()
+        .map(|a| {
+            let index = ((a.iter().len() / 2) as f32).ceil() as usize;
+            a[index].parse::<i32>().unwrap()
+        })
+        .sum();
+    println!("{:?}", middle_page_sum)
 }
