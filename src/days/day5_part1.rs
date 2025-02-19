@@ -1,3 +1,52 @@
+fn rule_to_tuple(rule_str: &str) -> Vec<(&str, &str)> {
+    rule_str
+        .lines()
+        .map(|r| {
+            let parts: Vec<&str> = r.split('|').collect();
+            (parts[0], parts[1])
+        })
+        .collect()
+}
+
+fn get_pages_with_rules<'a>(pages_str: &'a str, rule_str: &'a str) -> Vec<Vec<&'a str>> {
+    let pages_vecs: Vec<Vec<&str>> = pages_str
+        .lines()
+        .into_iter()
+        .map(|l| l.split(",").collect())
+        .collect();
+
+    let mut all_follow_rules: Vec<Vec<&str>> = Vec::new();
+    pages_vecs.iter().for_each(|pt| {
+        let mut is_follow_rule: Vec<bool> = vec![];
+        // check from i to each of the current pt against the rule
+        // ie:
+        // a vs b, a vs c, a vs d,
+        // b vs c, b vs d
+        // c vs d
+        for i in 0..pt.len() {
+            for j in i..pt.len() {
+                let a = pt[i];
+                let b = pt[j];
+                for (tr_a, tr_b) in &rule_to_tuple(rule_str) {
+                    if *tr_a == a && *tr_b == b {
+                        is_follow_rule.push(true); // no need to check further, save time
+                        break;
+                    }
+                    // if all the rule is false, then no push
+                    // meaning if the is_follow_rule len is too short compared to the pt len (*)
+                }
+            }
+        }
+        // *: total of is_follow_rule pushed should be the same with total unique combination of pt
+        // for the less means some of the pt iter did not follow the rule
+        let expected_combinations = pt.len() * (pt.len() - 1) / 2;
+        if is_follow_rule.len() == expected_combinations {
+            all_follow_rules.push(pt.to_vec());
+        }
+    });
+    all_follow_rules
+}
+
 pub fn test_run() {
     let test_rules = "47|53
 97|13
@@ -36,53 +85,9 @@ pub fn test_run() {
     //
     // or ... just bruteforce the checking (fuck it)
 
-    let tuple_rule: Vec<(&str, &str)> = test_rules
-        .lines()
-        .map(|r| {
-            let parts: Vec<&str> = r.split('|').collect();
-            (parts[0], parts[1])
-        })
-        .collect();
-
-    let p_test: Vec<Vec<&str>> = test_check
-        .lines()
-        .into_iter()
-        .map(|l| l.split(",").collect())
-        .collect();
-
-    let mut all_follow_rules: Vec<Vec<&str>> = Vec::new();
-    p_test.iter().for_each(|pt| {
-        let mut is_follow_rule: Vec<bool> = vec![];
-        // check from i to each of the current pt against the rule
-        // ie:
-        // a vs b, a vs c, a vs d,
-        // b vs c, b vs d
-        // c vs d
-        for i in 0..pt.len() {
-            for j in i..pt.len() {
-                let a = pt[i];
-                let b = pt[j];
-                for (tr_a, tr_b) in &tuple_rule {
-                    if *tr_a == a && *tr_b == b {
-                        is_follow_rule.push(true); // no need to check further, save time
-                        break;
-                    }
-                    // if all the rule is false, then no push
-                    // meaning if the is_follow_rule len is too short compared to the pt len (*)
-                }
-            }
-        }
-        // *: total of is_follow_rule pushed should be the same with total unique combination of pt
-        // for the less means some of the pt iter did not follow the rule
-        let expected_combinations = pt.len() * (pt.len() - 1) / 2;
-        if is_follow_rule.len() == expected_combinations {
-            all_follow_rules.push(pt.to_vec());
-        }
-    });
-
     // now find middle page number of all follow rules
     // then calculate sum of that middle page
-    let middle_page_sum: i32 = all_follow_rules
+    let middle_page_sum: i32 = get_pages_with_rules(test_check, test_rules)
         .iter()
         .map(|a| {
             let index = ((a.iter().len() / 2) as f32).ceil() as usize;
