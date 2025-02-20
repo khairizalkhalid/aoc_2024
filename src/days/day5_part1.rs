@@ -1,3 +1,12 @@
+use crate::utils;
+
+fn split_rules_pages(content: &str) -> (&str, &str) {
+    let mut parts = content.split("\n\n");
+    let first_part = parts.next().unwrap_or("");
+    let second_part = parts.next().unwrap_or("");
+    (first_part, second_part)
+}
+
 fn rule_to_tuple(rule_str: &str) -> Vec<(&str, &str)> {
     rule_str
         .lines()
@@ -95,4 +104,23 @@ pub fn test_run() {
         })
         .sum();
     println!("{:?}", middle_page_sum)
+}
+
+pub fn run() {
+    match utils::file_reader::read_file("day5.txt") {
+        Ok(contents) => {
+            ({
+                let (rules, pages) = split_rules_pages(&contents);
+                let middle_page_sum: i32 = get_pages_with_rules(pages, rules)
+                    .iter()
+                    .map(|a| {
+                        let index = ((a.iter().len() / 2) as f32).ceil() as usize;
+                        a[index].parse::<i32>().unwrap()
+                    })
+                    .sum();
+                println!("{:?}", middle_page_sum)
+            })
+        }
+        Err(e) => println!("Err: {}", e),
+    }
 }
