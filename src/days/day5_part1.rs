@@ -1,13 +1,13 @@
 use crate::utils;
 
-fn split_rules_pages(content: &str) -> (&str, &str) {
+pub fn split_rules_pages(content: &str) -> (&str, &str) {
     let mut parts = content.split("\n\n");
     let first_part = parts.next().unwrap_or("");
     let second_part = parts.next().unwrap_or("");
     (first_part, second_part)
 }
 
-fn rule_to_tuple(rule_str: &str) -> Vec<(&str, &str)> {
+pub fn rule_to_tuple(rule_str: &str) -> Vec<(&str, &str)> {
     rule_str
         .lines()
         .map(|r| {
@@ -28,7 +28,6 @@ fn get_pages_with_rules<'a>(pages_str: &'a str, rule_str: &'a str) -> Vec<Vec<&'
     pages_vecs
         .into_iter()
         .filter(|pt| {
-            let expected_combinations = pt.len() * (pt.len() - 1) / 2;
             let is_follow_rule = pt.iter().enumerate().all(|(i, &a)| {
                 pt.iter()
                     .skip(i + 1)
@@ -92,17 +91,15 @@ pub fn test_run() {
 pub fn run() {
     match utils::file_reader::read_file("day5.txt") {
         Ok(contents) => {
-            ({
-                let (rules, pages) = split_rules_pages(&contents);
-                let middle_page_sum: i32 = get_pages_with_rules(pages, rules)
-                    .iter()
-                    .map(|a| {
-                        let index = ((a.iter().len() / 2) as f32).ceil() as usize;
-                        a[index].parse::<i32>().unwrap()
-                    })
-                    .sum();
-                println!("{:?}", middle_page_sum)
-            })
+            let (rules, pages) = split_rules_pages(&contents);
+            let middle_page_sum: i32 = get_pages_with_rules(pages, rules)
+                .iter()
+                .map(|a| {
+                    let index = ((a.iter().len() / 2) as f32).ceil() as usize;
+                    a[index].parse::<i32>().unwrap()
+                })
+                .sum();
+            println!("{:?}", middle_page_sum)
         }
         Err(e) => println!("Err: {}", e),
     }
