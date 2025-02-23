@@ -1,5 +1,15 @@
 use crate::utils;
 
+trait ContentVecTuple {
+    fn calculate_distance_of_two_vectors(self) -> Vec<i32>;
+}
+
+impl ContentVecTuple for (Vec<i32>, Vec<i32>) {
+    fn calculate_distance_of_two_vectors(self) -> Vec<i32> {
+        calculate_distance_of_two_vectors(self.0, self.1)
+    }
+}
+
 pub fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
     let mut vec1 = Vec::new();
     let mut vec2 = Vec::new();
@@ -70,9 +80,10 @@ pub fn run() {
     //calculate sum of vec3
     match utils::file_reader::read_file("day1.txt") {
         Ok(contents) => {
-            let (mut vec1, mut vec2) = split_contents_into_two_vectors(&contents);
-            let distance_vec = calculate_distance_of_two_vectors(vec1, vec2);
-            let total_distance: i32 = distance_vec.iter().sum();
+            let total_distance: i32 = split_contents_into_two_vectors(&contents)
+                .calculate_distance_of_two_vectors()
+                .iter()
+                .sum();
             println!("{}", total_distance);
         }
         Err(e) => println!("Error: {}", e),
