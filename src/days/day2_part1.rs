@@ -100,3 +100,32 @@ pub fn run() {
         Err(e) => println!("Error: {}", e),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_get_readings_vector() {
+        let contents = "1 2 3 4 5\n5 4 3 2 1";
+        let readings_vector = get_readings_vector(contents);
+        assert_eq!(
+            readings_vector,
+            vec![vec![1, 2, 3, 4, 5], vec![5, 4, 3, 2, 1]]
+        )
+    }
+
+    #[test]
+    fn test_safety_check() {
+        assert_eq!(true, safety_check(vec![1, 2, 3, 4, 5])); // safe: increase max 1
+        assert_eq!(true, safety_check(vec![1, 2, 3, 4, 6])); // safe: increase max 2
+        assert_eq!(true, safety_check(vec![1, 2, 3, 4, 7])); // safe: increase max 3
+        assert_eq!(true, safety_check(vec![5, 4, 3, 2, 1])); // safe: decrease max 1
+        assert_eq!(true, safety_check(vec![6, 4, 3, 2, 1])); // safe: decrease max 2
+        assert_eq!(true, safety_check(vec![7, 4, 3, 2, 1])); // safe: decrease max 3
+        assert_eq!(false, safety_check(vec![1, 2, 3, 4, 8])); // unsafe: increase more than 3
+        assert_eq!(false, safety_check(vec![1, 2, 3, 2, 5])); // unsafe: increase then decrease
+        assert_eq!(false, safety_check(vec![1, 1, 3, 4, 5])); // unsafe: neither increase/decrease
+        assert_eq!(false, safety_check(vec![2, 1, 3, 4, 5])); // unsafe: deacrease
+    }
+}
