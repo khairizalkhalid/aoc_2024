@@ -15,6 +15,8 @@ pub fn split_contents_into_two_vectors(contents: &str) -> (Vec<i32>, Vec<i32>) {
             }
         }
     }
+    vec1.sort();
+    vec2.sort();
 
     (vec1, vec2)
 }
@@ -69,8 +71,6 @@ pub fn run() {
     match utils::file_reader::read_file("day1.txt") {
         Ok(contents) => {
             let (mut vec1, mut vec2) = split_contents_into_two_vectors(&contents);
-            vec1.sort();
-            vec2.sort();
             let distance_vec = calculate_distance_of_two_vectors(vec1, vec2);
             let total_distance: i32 = distance_vec.iter().sum();
             println!("{}", total_distance);
