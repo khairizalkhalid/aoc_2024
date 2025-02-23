@@ -126,6 +126,6 @@ mod tests {
         assert_eq!(false, safety_check(vec![1, 2, 3, 4, 8])); // unsafe: increase more than 3
         assert_eq!(false, safety_check(vec![1, 2, 3, 2, 5])); // unsafe: increase then decrease
         assert_eq!(false, safety_check(vec![1, 1, 3, 4, 5])); // unsafe: neither increase/decrease
-        assert_eq!(false, safety_check(vec![2, 1, 3, 4, 5])); // unsafe: deacrease
+        assert_eq!(false, safety_check(vec![2, 1, 3, 4, 5])); // unsafe: decrease then increase
     }
 }
