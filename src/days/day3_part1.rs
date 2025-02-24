@@ -39,3 +39,24 @@ pub fn run() {
         Err(e) => println!("Err: {}", e),
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_sum_of_muls() {
+        let test_cases = vec![
+            ("mul(2,3)", 6),                    // 2 * 3 = 6
+            ("mul(1,1)mul(2,2)", 5),            // 1 * 1 + 2 * 2 = 5
+            ("mul(3,4)mul(5,6)", 42),           // 3 * 4 + 5 * 6 = 42
+            ("mul(0,10)mul(10,0)", 0),          // 0 * 10 + 10 * 0 = 0
+            ("", 0),                            // No valid mul() patterns
+            ("mul(2,3)randomtextmul(4,5)", 26), // 2 * 3 + 4 * 5 = 26
+        ];
+
+        for (input, expected) in test_cases {
+            assert_eq!(sum_of_muls(input), expected);
+        }
+    }
+}
