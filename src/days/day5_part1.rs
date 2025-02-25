@@ -104,3 +104,47 @@ pub fn run() {
         Err(e) => println!("Err: {}", e),
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_split_rules_pages() {
+        let input = "rules\n\npages";
+        let (rules, pages) = split_rules_pages(input);
+        assert_eq!(rules, "rules");
+        assert_eq!(pages, "pages");
+
+        let input_no_pages = "rules";
+        let (rules, pages) = split_rules_pages(input_no_pages);
+        assert_eq!(rules, "rules");
+        assert_eq!(pages, "");
+    }
+
+    #[test]
+    fn test_rule_to_tuple() {
+        let input = "47|53\n97|13";
+        let expected = vec![("47", "53"), ("97", "13")];
+        assert_eq!(rule_to_tuple(input), expected);
+
+        let input_empty = "";
+        let expected_empty: Vec<(&str, &str)> = vec![];
+        assert_eq!(rule_to_tuple(input_empty), expected_empty);
+    }
+
+    #[test]
+    fn test_get_pages_with_rules() {
+        let rules = "47|53\n97|13";
+        let pages = "47,53\n97,13\n53,47";
+        let expected = vec![vec!["47", "53"], vec!["97", "13"]];
+        assert_eq!(get_pages_with_rules(pages, rules), expected);
+
+        let pages_no_match = "53,47\n13,97";
+        let expected_no_match: Vec<Vec<&str>> = vec![];
+        assert_eq!(
+            get_pages_with_rules(pages_no_match, rules),
+            expected_no_match
+        );
+    }
+}
