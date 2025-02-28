@@ -22,13 +22,11 @@ fn main() {
         return;
     }
 
-    let day = &args[1];
+    if args.len() == 3 {
+        utils::get_input_file::run(&args[2]);
+    }
 
-    // create a utility to download aoc input files and store in input folder as a txt file
-    // if args size 2 and args[1] = 'get_input' ie: 'cargo run get_input 6
-    // download file using curl into input/dayX.txt
-    // `curl -v --cookie "session=AOC24_COOKIE" https://adventofcode.com/2024/day/7/input > input/day7.txt`
-    // store session cookie in system environment AOC24_COOKIE
+    let day = &args[1];
 
     let mut functions: HashMap<&str, fn()> = HashMap::new();
     functions.insert("d1p1", || days::day1_part1::run());
