@@ -16,8 +16,9 @@ pub fn run(day: &str) {
 
     match env::var("AOC24_COOKIE") {
         Ok(cookie) => {
+            let set_cooker_header = "session=".to_string() + &cookie;
             easy.url(&url).unwrap();
-            easy.cookie(&cookie).unwrap();
+            easy.cookie(&set_cooker_header).unwrap();
             easy.write_function(|data| {
                 stdout().write_all(data).unwrap();
                 Ok(data.len())
