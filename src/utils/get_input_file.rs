@@ -1,4 +1,7 @@
-use std::io::{stdout, Write};
+use std::{
+    env,
+    io::{stdout, Write},
+};
 
 use curl::easy::Easy;
 
@@ -11,11 +14,17 @@ pub fn run(day: &str) {
     let mut easy = Easy::new();
     let url = "https://adventofcode.com/2024/day/".to_string() + day + "/input";
 
-    easy.url(&url).unwrap();
-    easy.write_function(|data| {
-        stdout().write_all(data).unwrap();
-        Ok(data.len())
-    })
-    .unwrap();
-    easy.perform().unwrap()
+    match env::var("AOC24_COOKIE") {
+        Ok(cookie) => {
+            easy.url(&url).unwrap();
+            easy.cookie(&cookie).unwrap();
+            easy.write_function(|data| {
+                stdout().write_all(data).unwrap();
+                Ok(data.len())
+            })
+            .unwrap();
+            easy.perform().unwrap()
+        }
+        Err(_) => eprintln!("AOC24_COOKIE not found in environment variable!"),
+    }
 }
