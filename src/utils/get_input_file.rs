@@ -1,7 +1,4 @@
-use std::{
-    env,
-    io::{stdout, Write},
-};
+use std::{env, fs::File, io::Write};
 
 use curl::easy::Easy;
 
@@ -16,11 +13,13 @@ pub fn run(day: &str) {
 
     match env::var("AOC24_COOKIE") {
         Ok(cookie) => {
+            let mut file = File::create("input/day".to_string() + day + ".txt").unwrap();
             let set_cooker_header = "session=".to_string() + &cookie;
+
             easy.url(&url).unwrap();
             easy.cookie(&set_cooker_header).unwrap();
-            easy.write_function(|data| {
-                stdout().write_all(data).unwrap();
+            easy.write_function(move |data| {
+                file.write_all(data).unwrap();
                 Ok(data.len())
             })
             .unwrap();
