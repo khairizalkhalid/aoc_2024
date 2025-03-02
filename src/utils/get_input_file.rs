@@ -9,12 +9,12 @@ use curl::easy::Easy;
 // store session cookie in system environment AOC24_COOKIE
 pub fn run(day: &str) {
     let mut easy = Easy::new();
-    let url = "https://adventofcode.com/2024/day/".to_string() + day + "/input";
+    let url = format!("https://adventofcode.com/2024/day/{}/input", day);
 
     match env::var("AOC24_COOKIE") {
         Ok(cookie) => {
-            let mut file = File::create("input/day".to_string() + day + ".txt").unwrap();
-            let set_cooker_header = "session=".to_string() + &cookie;
+            let mut file = File::create(format!("input/day{}.txt", day)).unwrap();
+            let set_cooker_header = format!("session={}", &cookie);
 
             easy.url(&url).unwrap();
             easy.cookie(&set_cooker_header).unwrap();
