@@ -17,7 +17,11 @@ pub fn rule_to_tuple(rule_str: &str) -> Vec<(&str, &str)> {
         .collect()
 }
 
-fn get_pages_with_rules<'a>(pages_str: &'a str, rule_str: &'a str) -> Vec<Vec<&'a str>> {
+pub fn get_pages_with_rules<'a>(
+    pages_str: &'a str,
+    rule_str: &'a str,
+    is_against_rule: bool,
+) -> Vec<Vec<&'a str>> {
     let rules = rule_to_tuple(rule_str);
     let pages_vecs: Vec<Vec<&str>> = pages_str
         .lines()
@@ -33,7 +37,7 @@ fn get_pages_with_rules<'a>(pages_str: &'a str, rule_str: &'a str) -> Vec<Vec<&'
                     .skip(i + 1)
                     .all(|&b| rules.iter().any(|&(tr_a, tr_b)| tr_a == a && tr_b == b))
             });
-            is_follow_rule
+            !is_against_rule == is_follow_rule
         })
         .collect()
 }
@@ -53,7 +57,7 @@ pub fn run() {
     match utils::file_reader::read_file("day5.txt") {
         Ok(contents) => {
             let (rules, pages) = split_rules_pages(&contents);
-            let middle_page_sum: i32 = get_pages_with_rules(pages, rules)
+            let middle_page_sum: i32 = get_pages_with_rules(pages, rules, false)
                 .iter()
                 .map(|a| {
                     let index = ((a.iter().len() / 2) as f32).ceil() as usize;
@@ -130,14 +134,14 @@ mod test {
             vec!["97", "61", "53", "29", "13"],
             vec!["75", "29", "13"],
         ];
-        assert_eq!(get_pages_with_rules(pages, rules), expected);
+        assert_eq!(get_pages_with_rules(pages, rules, false), expected);
 
         let pages_no_match = "75,97,47,61,53
 61,13,29
 97,13,75,29,47";
         let expected_no_match: Vec<Vec<&str>> = vec![];
         assert_eq!(
-            get_pages_with_rules(pages_no_match, rules),
+            get_pages_with_rules(pages_no_match, rules, false),
             expected_no_match
         );
     }
