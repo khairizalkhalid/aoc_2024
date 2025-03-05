@@ -135,12 +135,45 @@ mod test {
 
     #[test]
     fn test_get_pages_with_rules() {
-        let rules = "47|53\n97|13";
-        let pages = "47,53\n97,13\n53,47";
-        let expected = vec![vec!["47", "53"], vec!["97", "13"]];
+        let rules = "47|53
+97|13
+97|61
+97|47
+75|29
+61|13
+75|53
+29|13
+97|29
+53|29
+61|53
+97|53
+61|29
+47|13
+75|47
+97|75
+47|61
+75|61
+47|29
+75|13
+53|13";
+
+        let pages = "75,47,61,53,29
+97,61,53,29,13
+75,29,13
+75,97,47,61,53
+61,13,29
+97,13,75,29,47";
+
+        let expected = vec![
+            vec!["75", "47", "61", "53", "29"],
+            vec!["97", "61", "53", "29", "13"],
+            vec!["75", "29", "13"],
+        ];
         assert_eq!(get_pages_with_rules(pages, rules), expected);
 
-        let pages_no_match = "53,47\n13,97";
+        let pages_no_match = "75,97,47,61,53
+                          61,13,29
+                          97,13,75,29,47";
         let expected_no_match: Vec<Vec<&str>> = vec![];
         assert_eq!(
             get_pages_with_rules(pages_no_match, rules),
