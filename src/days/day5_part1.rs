@@ -133,8 +133,8 @@ mod test {
         assert_eq!(get_pages_with_rules(pages, rules), expected);
 
         let pages_no_match = "75,97,47,61,53
-                          61,13,29
-                          97,13,75,29,47";
+61,13,29
+97,13,75,29,47";
         let expected_no_match: Vec<Vec<&str>> = vec![];
         assert_eq!(
             get_pages_with_rules(pages_no_match, rules),
