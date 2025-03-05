@@ -7,7 +7,7 @@ pub fn split_rules_pages(content: &str) -> (&str, &str) {
     (first_part, second_part)
 }
 
-pub fn rule_to_tuple(rule_str: &str) -> Vec<(&str, &str)> {
+fn rule_to_tuple(rule_str: &str) -> Vec<(&str, &str)> {
     rule_str
         .lines()
         .map(|r| {
