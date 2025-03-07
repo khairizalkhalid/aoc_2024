@@ -41,6 +41,16 @@ pub fn get_pages_with_rules<'a>(
         .collect()
 }
 
+pub fn middle_page_sum(pages: Vec<Vec<&str>>) -> i32 {
+    pages
+        .iter()
+        .map(|a| {
+            let index = ((a.iter().len() / 2) as f32).ceil() as usize;
+            a[index].parse::<i32>().unwrap()
+        })
+        .sum()
+}
+
 pub fn run() {
     // sort test rule into a searchable tree
     // iterate thru test check lines
@@ -56,13 +66,8 @@ pub fn run() {
     match utils::file_reader::read_file("day5.txt") {
         Ok(contents) => {
             let (rules, pages) = split_rules_pages(&contents);
-            let middle_page_sum: i32 = get_pages_with_rules(pages, rule_to_tuple(rules), false)
-                .iter()
-                .map(|a| {
-                    let index = ((a.iter().len() / 2) as f32).ceil() as usize;
-                    a[index].parse::<i32>().unwrap()
-                })
-                .sum();
+            let middle_page_sum =
+                middle_page_sum(get_pages_with_rules(pages, rule_to_tuple(rules), false));
             println!("{:?}", middle_page_sum)
         }
         Err(e) => println!("Err: {}", e),
@@ -146,6 +151,26 @@ mod test {
         assert_eq!(
             get_pages_with_rules(pages_no_match, rule_tuples.clone(), false),
             expected_no_match
+        );
+    }
+
+    #[test]
+    fn test_middle_page_sum() {
+        let pages = vec![
+            vec!["97", "75", "47", "61", "53"],
+            vec!["61", "29", "13"],
+            vec!["97", "75", "47", "29", "13"],
+        ];
+
+        assert_eq!(
+            pages
+                .iter()
+                .map(|a| {
+                    let index = ((a.iter().len() / 2) as f32).ceil() as usize;
+                    a[index].parse::<i32>().unwrap()
+                })
+                .sum::<i32>(),
+            123
         );
     }
 }
