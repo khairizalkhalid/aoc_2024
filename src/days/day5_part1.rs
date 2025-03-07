@@ -120,6 +120,7 @@ mod test {
 47|29
 75|13
 53|13";
+        let rule_tuples = rule_to_tuple(rules);
 
         let pages = "75,47,61,53,29
 97,61,53,29,13
@@ -134,7 +135,7 @@ mod test {
             vec!["75", "29", "13"],
         ];
         assert_eq!(
-            get_pages_with_rules(pages, rule_to_tuple(rules), false),
+            get_pages_with_rules(pages, rule_tuples.clone(), false),
             expected
         );
 
@@ -143,7 +144,7 @@ mod test {
 97,13,75,29,47";
         let expected_no_match: Vec<Vec<&str>> = vec![];
         assert_eq!(
-            get_pages_with_rules(pages_no_match, rule_to_tuple(rules), false),
+            get_pages_with_rules(pages_no_match, rule_tuples.clone(), false),
             expected_no_match
         );
     }
