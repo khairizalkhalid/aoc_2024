@@ -31,10 +31,16 @@ pub fn run() {
     match utils::file_reader::read_file("day5.txt") {
         Ok(contents) => {
             let (rules, pages) = split_rules_pages(&contents);
-            println!("{}{}", rules, pages)
+            let rule_tuple = rule_to_tuple(rules);
             // get pages which violate the rules
+            let against_rules = get_pages_with_rules(pages, rule_tuple.clone(), true);
             // rearrage them
             // calculate the middle
+            let middle_page_sum = middle_page_sum(rearrange_pages_with_rules(
+                against_rules,
+                rule_tuple.clone(),
+            ));
+            println!("{:?}", middle_page_sum)
         }
         Err(e) => println!("Err: {}", e),
     }
