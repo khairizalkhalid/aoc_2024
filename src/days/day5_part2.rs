@@ -15,7 +15,7 @@ pub fn run() {
 
 #[cfg(test)]
 mod test {
-    use crate::days::day5_part1::get_pages_with_rules;
+    use crate::days::day5_part1::{get_pages_with_rules, rule_to_tuple};
 
     #[test]
     fn test_get_pages_against_rules() {
@@ -53,14 +53,17 @@ mod test {
             vec!["61", "13", "29"],
             vec!["97", "13", "75", "29", "47"],
         ];
-        assert_eq!(get_pages_with_rules(pages, rules, true), expected);
+        assert_eq!(
+            get_pages_with_rules(pages, rule_to_tuple(rules), true),
+            expected
+        );
 
         let pages_match = "75,47,61,53,29
 97,61,53,29,13
 75,29,13";
         let expected_no_match: Vec<Vec<&str>> = vec![];
         assert_eq!(
-            get_pages_with_rules(pages_match, rules, true),
+            get_pages_with_rules(pages_match, rule_to_tuple(rules), true),
             expected_no_match
         );
     }
