@@ -1,3 +1,7 @@
+fn str_to_x_y(input: &str) -> Vec<Vec<char>> {
+    input.lines().map(|l| l.chars().collect()).collect()
+}
+
 pub fn run() {
     println!("Day6")
     // convert the map into x y
@@ -11,16 +15,30 @@ pub fn run() {
     // else, count steps and update position
 }
 
+//test case
+//....#.....
+//.........#
+//..........
+//..#.......
+//.......#..
+//..........
+//.#..^.....
+//........#.
+//#.........
+//......#..."
 #[cfg(test)]
 mod test {
-    // ....#.....
-    // .........#
-    // ..........
-    // ..#.......
-    // .......#..
-    // ..........
-    // .#..^.....
-    // ........#.
-    // #.........
-    // ......#...
+    use super::*;
+
+    #[test]
+    fn test_str_to_room_map() {
+        let room_str = "....#.....\n.........#";
+
+        let expected = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(str_to_x_y(room_str), expected);
+    }
 }
