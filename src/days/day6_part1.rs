@@ -1,4 +1,4 @@
-fn str_to_x_y(input: &str) -> Vec<Vec<char>> {
+fn str_to_2d_canvas(input: &str) -> Vec<Vec<char>> {
     input.lines().map(|l| l.chars().collect()).collect()
 }
 
@@ -31,7 +31,7 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_str_to_room_map() {
+    fn test_str_to_2d_canvas() {
         let room_str = "....#.....\n.........#";
 
         let expected = vec![
@@ -39,6 +39,6 @@ mod test {
             vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
         ];
 
-        assert_eq!(str_to_x_y(room_str), expected);
+        assert_eq!(str_to_2d_canvas(room_str), expected);
     }
 }
