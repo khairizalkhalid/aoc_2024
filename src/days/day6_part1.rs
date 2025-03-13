@@ -135,4 +135,31 @@ mod test {
 
         assert_eq!(is_front_clear(entity, obstacles), true);
     }
+
+    #[test]
+    fn test_is_not_front_clear() {
+        // direction 0
+        let entity = (4, 1, 0);
+        let obstacles = vec![(4, 0), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), false);
+
+        // direction 90
+        let entity = (4, 1, 90);
+        let obstacles = vec![(5, 1), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), false);
+
+        // direction 180
+        let entity = (4, 1, 180);
+        let obstacles = vec![(4, 2), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), false);
+
+        // direction 270
+        let entity = (4, 1, 270);
+        let obstacles = vec![(3, 1), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), false);
+    }
 }
