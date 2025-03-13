@@ -108,4 +108,31 @@ mod test {
 
         assert_eq!(get_obsticle_coordinate(two_d_canvas), expected);
     }
+
+    #[test]
+    fn test_is_front_clear() {
+        // direction 0
+        let entity = (4, 1, 0);
+        let obstacles = vec![(5, 0), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), true);
+
+        // direction 90
+        let entity = (4, 1, 90);
+        let obstacles = vec![(5, 0), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), true);
+
+        // direction 180
+        let entity = (4, 1, 180);
+        let obstacles = vec![(5, 0), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), true);
+
+        // direction 270
+        let entity = (4, 1, 270);
+        let obstacles = vec![(5, 0), (9, 1)];
+
+        assert_eq!(is_front_clear(entity, obstacles), true);
+    }
 }
