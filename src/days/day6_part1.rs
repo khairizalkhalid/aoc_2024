@@ -57,6 +57,18 @@ fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) ->
     }
 }
 
+fn move_forward(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
+    let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
+
+    match ntt_dir {
+        0 => (ntt_x, ntt_y - 1, ntt_dir),
+        90 => (ntt_x + 1, ntt_y, ntt_dir),
+        180 => (ntt_x, ntt_y + 1, ntt_dir),
+        270 => (ntt_x - 1, ntt_y, ntt_dir),
+        _ => (ntt_x, ntt_y, ntt_dir),
+    }
+}
+
 pub fn run() {
     println!("Day6")
     // convert the map into x y
@@ -161,5 +173,28 @@ mod test {
         let obstacles = vec![(3, 1), (9, 1)];
 
         assert_eq!(is_front_clear(entity, obstacles), false);
+    }
+
+    #[test]
+    fn test_move_forward() {
+        // direction 0
+        let entity = (4, 1, 0);
+
+        assert_eq!(move_forward(entity), (4, 0, 0));
+
+        // direction 90
+        let entity = (4, 1, 90);
+
+        assert_eq!(move_forward(entity), (5, 1, 90));
+
+        // direction 180
+        let entity = (4, 1, 180);
+
+        assert_eq!(move_forward(entity), (4, 2, 180));
+
+        // direction 270
+        let entity = (4, 1, 270);
+
+        assert_eq!(move_forward(entity), (3, 1, 270));
     }
 }
