@@ -17,20 +17,20 @@ fn get_obsticle_coordinate(canvas: Vec<Vec<char>>) -> Vec<(i32, i32)> {
     obsticle_x_y
 }
 
-fn get_entity_xy_dir(canvas: Vec<Vec<char>>) -> Vec<(i32, i32, i32)> {
+fn get_entity_xy_dir(canvas: Vec<Vec<char>>) -> (i32, i32, i32) {
     let entity_form_dir = vec![('^', 0), ('>', 90), ('v', 180), ('<', 270)];
-
-    let mut entity_x_y_dir: Vec<(i32, i32, i32)> = vec![];
 
     for (y, row) in canvas.iter().enumerate() {
         for (x, &c) in row.iter().enumerate() {
-            if let Some(dir) = entity_form_dir.iter().find(|(d, _)| *d == c) {
-                entity_x_y_dir.push((x as i32, y as i32, dir.1));
+            for (dir, dir_val) in entity_form_dir.iter() {
+                if c == *dir {
+                    return (x as i32, y as i32, *dir_val);
+                }
             }
         }
     }
 
-    entity_x_y_dir
+    (0, 0, 0)
 }
 
 fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) -> bool {
@@ -187,7 +187,7 @@ mod test {
             vec!['.', '.', '.', '.', '^', '.', '.', '.', '.', '#'],
         ];
 
-        let expected = vec![(4, 1, 0)];
+        let expected = (4, 1, 0);
 
         assert_eq!(get_entity_xy_dir(two_d_canvas), expected);
 
@@ -196,7 +196,7 @@ mod test {
             vec!['.', '.', '.', '.', '>', '.', '.', '.', '.', '#'],
         ];
 
-        let expected = vec![(4, 1, 90)];
+        let expected = (4, 1, 90);
 
         assert_eq!(get_entity_xy_dir(two_d_canvas), expected);
 
@@ -205,7 +205,7 @@ mod test {
             vec!['.', '.', '.', '.', 'v', '.', '.', '.', '.', '#'],
         ];
 
-        let expected = vec![(4, 1, 180)];
+        let expected = (4, 1, 180);
 
         assert_eq!(get_entity_xy_dir(two_d_canvas), expected);
 
@@ -214,7 +214,7 @@ mod test {
             vec!['.', '.', '.', '.', '<', '.', '.', '.', '.', '#'],
         ];
 
-        let expected = vec![(4, 1, 270)];
+        let expected = (4, 1, 270);
 
         assert_eq!(get_entity_xy_dir(two_d_canvas), expected);
     }
