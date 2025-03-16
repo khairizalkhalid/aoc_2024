@@ -73,6 +73,42 @@ fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) ->
     }
 }
 
+fn is_front_out_of_bounds(entity_xy_dir: (i32, i32, i32), canvas: Vec<Vec<char>>) -> bool {
+    let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
+
+    match ntt_dir {
+        0 => {
+            let front_y = ntt_y - 1;
+            if front_y < 0 {
+                return true;
+            }
+            return false;
+        }
+        90 => {
+            let front_x = ntt_x + 1;
+            if front_x >= canvas[0].len() as i32 {
+                return true;
+            }
+            return false;
+        }
+        180 => {
+            let front_y = ntt_y + 1;
+            if front_y >= canvas.len() as i32 {
+                return true;
+            }
+            return false;
+        }
+        270 => {
+            let front_x = ntt_x - 1;
+            if front_x < 0 {
+                return true;
+            }
+            return false;
+        }
+        _ => false,
+    }
+}
+
 fn mark_visited(canvas: Vec<Vec<char>>, entity_xy_dir: (i32, i32, i32)) -> Vec<Vec<char>> {
     let (ntt_x, ntt_y, _ntt_dir) = entity_xy_dir;
 
@@ -271,6 +307,45 @@ mod test {
         let obstacles = vec![(3, 1), (9, 1)];
 
         assert_eq!(is_front_clear(entity, obstacles), false);
+    }
+
+    #[test]
+    fn test_is_front_out_of_bounds() {
+        // direction 0
+        let entity = (4, 0, 0);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), true);
+
+        // direction 90
+        let entity = (9, 0, 90);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), true);
+
+        // direction 180
+        let entity = (4, 1, 180);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), true);
+
+        // direction 270
+        let entity = (0, 1, 270);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), true);
     }
 
     #[test]
