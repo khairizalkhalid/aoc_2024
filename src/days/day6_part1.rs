@@ -349,6 +349,45 @@ mod test {
     }
 
     #[test]
+    fn test_is_not_front_out_of_bounds() {
+        // direction 0
+        let entity = (4, 1, 0);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), false);
+
+        // direction 90
+        let entity = (8, 1, 90);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), false);
+
+        // direction 180
+        let entity = (4, 0, 180);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), false);
+
+        // direction 270
+        let entity = (9, 1, 270);
+        let canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(is_front_out_of_bounds(entity, canvas), false);
+    }
+
+    #[test]
     fn test_move_forward() {
         // direction 0
         let entity = (4, 1, 0);
