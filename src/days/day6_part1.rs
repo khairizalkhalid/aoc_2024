@@ -164,6 +164,40 @@ fn count_visited(canvas: Vec<Vec<char>>) -> i32 {
         .map(|r| r.iter().filter(|&&c| c == 'X').count() as i32)
         .sum()
 }
+
+fn test_run() -> i32 {
+    //test case
+    //....#.....
+    //.........#
+    //..........
+    //..#.......
+    //.......#..
+    //..........
+    //.#..^.....
+    //........#.
+    //#.........
+    //......#..."
+
+    let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
+
+    let mut canvas = str_to_2d_canvas(room_str);
+    let obsticle = get_obsticle_coordinate(canvas.clone());
+    let mut entity = get_entity_xy_dir(canvas.clone());
+
+    loop {
+        if !is_front_clear(entity, obsticle.clone()) {
+            entity = turn_right(entity);
+        } else if is_front_out_of_bounds(entity, canvas.clone()) {
+            break;
+        } else {
+            entity = move_forward(entity);
+            canvas = mark_visited(canvas, entity);
+        }
+    }
+
+    count_visited(canvas)
+}
+
 pub fn run() {
     println!("Day6")
     // convert the map into x y
@@ -177,17 +211,6 @@ pub fn run() {
     // else, count steps and update position
 }
 
-//test case
-//....#.....
-//.........#
-//..........
-//..#.......
-//.......#..
-//..........
-//.#..^.....
-//........#.
-//#.........
-//......#..."
 #[cfg(test)]
 mod test {
     use super::*;
@@ -474,5 +497,10 @@ mod test {
         ];
 
         assert_eq!(count_visited(two_d_canvas), 4);
+    }
+
+    #[test]
+    fn test_test_run() {
+        assert_eq!(test_run(), 41);
     }
 }
