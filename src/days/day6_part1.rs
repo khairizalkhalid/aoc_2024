@@ -57,7 +57,7 @@ fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) ->
     }
 }
 
-fn mark_visited(mut canvas: Vec<Vec<char>>, entity_xy_dir: (i32, i32, i32)) -> Vec<Vec<char>> {
+fn mark_visited(canvas: Vec<Vec<char>>, entity_xy_dir: (i32, i32, i32)) -> Vec<Vec<char>> {
     let (ntt_x, ntt_y, _ntt_dir) = entity_xy_dir;
 
     canvas
@@ -106,6 +106,12 @@ fn turn_right(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
     (ntt_x, ntt_y, ntt_dir + 90)
 }
 
+fn count_visited(canvas: Vec<Vec<char>>) -> i32 {
+    canvas
+        .iter()
+        .map(|r| r.iter().filter(|&&c| c == 'X').count() as i32)
+        .sum()
+}
 pub fn run() {
     println!("Day6")
     // convert the map into x y
@@ -273,5 +279,31 @@ mod test {
         ];
 
         assert_eq!(mark_visited(two_d_canvas, entity), expected);
+    }
+
+    #[test]
+    fn test_count_visited() {
+        let two_d_canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', 'X', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(count_visited(two_d_canvas), 1);
+
+        let two_d_canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', 'X', '.', '.', '.', '.', '#'],
+            vec!['.', '.', '.', '.', 'X', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(count_visited(two_d_canvas), 2);
+
+        let two_d_canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', 'X', 'X', 'X', 'x', 'x', '#'],
+            vec!['.', '.', '.', '.', 'X', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(count_visited(two_d_canvas), 4);
     }
 }
