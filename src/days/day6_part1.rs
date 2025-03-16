@@ -69,6 +69,16 @@ fn move_forward(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
     }
 }
 
+fn turn_right(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
+    let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
+
+    if ntt_dir == 270 {
+        return (ntt_x, ntt_y, 0);
+    }
+
+    (ntt_x, ntt_y, ntt_dir + 90)
+}
+
 pub fn run() {
     println!("Day6")
     // convert the map into x y
@@ -196,5 +206,28 @@ mod test {
         let entity = (4, 1, 270);
 
         assert_eq!(move_forward(entity), (3, 1, 270));
+    }
+
+    #[test]
+    fn test_turn_right() {
+        // direction 0
+        let entity = (4, 1, 0);
+
+        assert_eq!(turn_right(entity), (4, 1, 90));
+
+        // direction 90
+        let entity = (4, 1, 90);
+
+        assert_eq!(turn_right(entity), (4, 1, 180));
+
+        // direction 180
+        let entity = (4, 1, 180);
+
+        assert_eq!(turn_right(entity), (4, 1, 270));
+
+        // direction 270
+        let entity = (4, 1, 270);
+
+        assert_eq!(turn_right(entity), (4, 1, 0));
     }
 }
