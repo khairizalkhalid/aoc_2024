@@ -57,6 +57,33 @@ fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) ->
     }
 }
 
+fn mark_visited(mut canvas: Vec<Vec<char>>, entity_xy_dir: (i32, i32, i32)) -> Vec<Vec<char>> {
+    let (ntt_x, ntt_y, _ntt_dir) = entity_xy_dir;
+
+    canvas
+        .into_iter()
+        .enumerate()
+        .map(|(row_i, row)| {
+            if row_i == ntt_y as usize {
+                row.into_iter()
+                    .enumerate()
+                    .map(
+                        |(col_i, col)| {
+                            if col_i == ntt_x as usize {
+                                'X'
+                            } else {
+                                col
+                            }
+                        },
+                    )
+                    .collect()
+            } else {
+                row
+            }
+        })
+        .collect()
+}
+
 fn move_forward(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
     let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
 
@@ -229,5 +256,22 @@ mod test {
         let entity = (4, 1, 270);
 
         assert_eq!(turn_right(entity), (4, 1, 0));
+    }
+
+    #[test]
+    fn test_mark_visited() {
+        let two_d_canvas = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '.', '.', '.', '.', '#'],
+        ];
+
+        let entity = (4, 1, 0);
+
+        let expected = vec![
+            vec!['.', '.', '.', '.', '#', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', 'X', '.', '.', '.', '.', '#'],
+        ];
+
+        assert_eq!(mark_visited(two_d_canvas, entity), expected);
     }
 }
