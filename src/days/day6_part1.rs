@@ -1,3 +1,5 @@
+use crate::utils;
+
 fn str_to_2d_canvas(input: &str) -> Vec<Vec<char>> {
     input.lines().map(|l| l.chars().collect()).collect()
 }
@@ -165,6 +167,7 @@ fn count_visited(canvas: Vec<Vec<char>>) -> i32 {
         .sum()
 }
 
+#[allow(dead_code)]
 fn test_run() -> i32 {
     //test case
     //....#.....
@@ -199,7 +202,6 @@ fn test_run() -> i32 {
 }
 
 pub fn run() {
-    println!("Day6")
     // convert the map into x y
     // map store obsticle
     // create entity tuple/obj w position, direction and steps taken
@@ -209,6 +211,27 @@ pub fn run() {
     // if out of bounds, end
     // if obs update +90 direction
     // else, count steps and update position
+    match utils::file_reader::read_file("day6.txt") {
+        Ok(contents) => {
+            let mut canvas = str_to_2d_canvas(&contents);
+            let obsticle = get_obsticle_coordinate(canvas.clone());
+            let mut entity = get_entity_xy_dir(canvas.clone());
+
+            loop {
+                if !is_front_clear(entity, obsticle.clone()) {
+                    entity = turn_right(entity);
+                } else if is_front_out_of_bounds(entity, canvas.clone()) {
+                    break;
+                } else {
+                    entity = move_forward(entity);
+                    canvas = mark_visited(canvas, entity);
+                }
+            }
+
+            println!("Visited: {}", count_visited(canvas));
+        }
+        Err(e) => println!("Err: {}", e),
+    }
 }
 
 #[cfg(test)]
