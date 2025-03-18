@@ -1,6 +1,3 @@
-Sure! Here's a draft for your README.md file for the `aoc_2024` repository:
-
-```markdown
 # Advent of Code 2024 🎄
 
 Welcome to my Advent of Code 2024 repository! This repository contains my solutions to the Advent of Code 2024 challenges, implemented in Rust.
@@ -84,6 +81,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Happy coding and happy holidays! 🎅🎄
-```
-
-Feel free to modify this README to better suit your needs.
