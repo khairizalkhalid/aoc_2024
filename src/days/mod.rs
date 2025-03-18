@@ -9,3 +9,4 @@ pub mod day4_part2;
 pub mod day5_part1;
 pub mod day5_part2;
 pub mod day6_part1;
+pub mod day6_part2;
