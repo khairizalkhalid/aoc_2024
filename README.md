@@ -68,7 +68,7 @@ This project uses the following Rust dependencies:
 [dependencies]
 ```
 
-Add any dependencies you use in your solutions here.
+> TODO: Add dependencies use in this project here. Usually I write my own to practice
 
 ## Contributing
 
