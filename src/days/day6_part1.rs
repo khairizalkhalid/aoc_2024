@@ -161,9 +161,13 @@ fn turn_right(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
 }
 
 fn count_visited(canvas: Vec<Vec<char>>) -> i32 {
+    count_mark(canvas, 'X')
+}
+
+pub fn count_mark(canvas: Vec<Vec<char>>, mark: char) -> i32 {
     canvas
         .iter()
-        .map(|r| r.iter().filter(|&&c| c == 'X').count() as i32)
+        .map(|r| r.iter().filter(|&&c| c == mark).count() as i32)
         .sum()
 }
 
