@@ -1,10 +1,10 @@
 use crate::utils;
 
-fn str_to_2d_canvas(input: &str) -> Vec<Vec<char>> {
+pub fn str_to_2d_canvas(input: &str) -> Vec<Vec<char>> {
     input.lines().map(|l| l.chars().collect()).collect()
 }
 
-fn get_obsticle_coordinate(canvas: Vec<Vec<char>>) -> Vec<(i32, i32)> {
+pub fn get_obsticle_coordinate(canvas: Vec<Vec<char>>) -> Vec<(i32, i32)> {
     let obsticle: char = '#';
     let mut obsticle_x_y: Vec<(i32, i32)> = vec![];
 
@@ -19,7 +19,7 @@ fn get_obsticle_coordinate(canvas: Vec<Vec<char>>) -> Vec<(i32, i32)> {
     obsticle_x_y
 }
 
-fn get_entity_xy_dir(canvas: Vec<Vec<char>>) -> (i32, i32, i32) {
+pub fn get_entity_xy_dir(canvas: Vec<Vec<char>>) -> (i32, i32, i32) {
     let entity_form_dir = vec![('^', 0), ('>', 90), ('v', 180), ('<', 270)];
 
     for (y, row) in canvas.iter().enumerate() {
@@ -35,7 +35,7 @@ fn get_entity_xy_dir(canvas: Vec<Vec<char>>) -> (i32, i32, i32) {
     (0, 0, 0)
 }
 
-fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) -> bool {
+pub fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) -> bool {
     let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
 
     match ntt_dir {
@@ -75,7 +75,7 @@ fn is_front_clear(entity_xy_dir: (i32, i32, i32), obstacles: Vec<(i32, i32)>) ->
     }
 }
 
-fn is_front_out_of_bounds(entity_xy_dir: (i32, i32, i32), canvas: Vec<Vec<char>>) -> bool {
+pub fn is_front_out_of_bounds(entity_xy_dir: (i32, i32, i32), canvas: Vec<Vec<char>>) -> bool {
     let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
 
     match ntt_dir {
@@ -111,7 +111,7 @@ fn is_front_out_of_bounds(entity_xy_dir: (i32, i32, i32), canvas: Vec<Vec<char>>
     }
 }
 
-fn mark_visited(canvas: Vec<Vec<char>>, entity_xy_dir: (i32, i32, i32)) -> Vec<Vec<char>> {
+pub fn mark_visited(canvas: Vec<Vec<char>>, entity_xy_dir: (i32, i32, i32)) -> Vec<Vec<char>> {
     let (ntt_x, ntt_y, _ntt_dir) = entity_xy_dir;
 
     canvas
@@ -138,7 +138,7 @@ fn mark_visited(canvas: Vec<Vec<char>>, entity_xy_dir: (i32, i32, i32)) -> Vec<V
         .collect()
 }
 
-fn move_forward(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
+pub fn move_forward(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
     let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
 
     match ntt_dir {
@@ -150,7 +150,7 @@ fn move_forward(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
     }
 }
 
-fn turn_right(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
+pub fn turn_right(entity_xy_dir: (i32, i32, i32)) -> (i32, i32, i32) {
     let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
 
     if ntt_dir == 270 {
