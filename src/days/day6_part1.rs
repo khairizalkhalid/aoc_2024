@@ -4,13 +4,12 @@ pub fn str_to_2d_canvas(input: &str) -> Vec<Vec<char>> {
     input.lines().map(|l| l.chars().collect()).collect()
 }
 
-pub fn get_obsticle_coordinate(canvas: Vec<Vec<char>>) -> Vec<(i32, i32)> {
-    let obsticle: char = '#';
+pub fn get_item_coordinates(canvas: Vec<Vec<char>>, item: char) -> Vec<(i32, i32)> {
     let mut obsticle_x_y: Vec<(i32, i32)> = vec![];
 
     for (y, row) in canvas.iter().enumerate() {
         for (x, &c) in row.iter().enumerate() {
-            if c == obsticle {
+            if c == item {
                 obsticle_x_y.push((x as i32, y as i32));
             }
         }
@@ -188,7 +187,7 @@ fn test_run() -> i32 {
     let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
 
     let mut canvas = str_to_2d_canvas(room_str);
-    let obsticle = get_obsticle_coordinate(canvas.clone());
+    let obsticle = get_item_coordinates(canvas.clone(), '#');
     let mut entity = get_entity_xy_dir(canvas.clone());
 
     loop {
@@ -218,7 +217,7 @@ pub fn run() {
     match utils::file_reader::read_file("day6.txt") {
         Ok(contents) => {
             let mut canvas = str_to_2d_canvas(&contents);
-            let obsticle = get_obsticle_coordinate(canvas.clone());
+            let obsticle = get_item_coordinates(canvas.clone(), '#');
             let mut entity = get_entity_xy_dir(canvas.clone());
 
             loop {
@@ -263,7 +262,7 @@ mod test {
 
         let expected = vec![(4, 0), (9, 1)];
 
-        assert_eq!(get_obsticle_coordinate(two_d_canvas), expected);
+        assert_eq!(get_item_coordinates(two_d_canvas, '#'), expected);
     }
 
     #[test]
