@@ -1,5 +1,9 @@
+use crate::days::day6_part1::{
+    get_entity_xy_dir, is_front_clear, is_front_out_of_bounds, mark_visited, move_forward,
+    str_to_2d_canvas, turn_right,
+};
 
-fn is_front_looping(entity_xy_dir: (i32, i32, i32), items: Vec<(i32, i32, char)>) -> bool {
+fn is_front_looping(entity_xy_dir: (i32, i32, i32), items: &[(i32, i32, char)]) -> bool {
     let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
 
     match ntt_dir {
@@ -59,21 +63,21 @@ mod test {
         let entity = (4, 1, 0);
         let items = vec![(4, 0, '|'), (9, 1, '|')];
 
-        assert_eq!(is_front_looping(entity, items), true);
+        assert_eq!(is_front_looping(entity, &items), true);
 
         let entity = (4, 1, 90);
         let items = vec![(5, 1, '-'), (9, 1, '|')];
 
-        assert_eq!(is_front_looping(entity, items), true);
+        assert_eq!(is_front_looping(entity, &items), true);
 
         let entity = (4, 1, 180);
         let items = vec![(4, 2, '|'), (9, 1, '|')];
 
-        assert_eq!(is_front_looping(entity, items), true);
+        assert_eq!(is_front_looping(entity, &items), true);
 
         let entity = (4, 1, 270);
         let items = vec![(3, 1, '-'), (9, 1, '-')];
 
-        assert_eq!(is_front_looping(entity, items), true);
+        assert_eq!(is_front_looping(entity, &items), true);
     }
 }
