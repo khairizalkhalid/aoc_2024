@@ -204,6 +204,24 @@ fn test_run() -> i32 {
     count_visited(canvas)
 }
 
+pub fn get_visited_canvas(contents: String) -> Vec<Vec<char>> {
+    let mut canvas = str_to_2d_canvas(&contents);
+    let obsticle = get_item_coordinates(canvas.clone(), '#');
+    let mut entity = get_entity_xy_dir(canvas.clone());
+
+    loop {
+        if !is_front_clear(entity, obsticle.clone()) {
+            entity = turn_right(entity);
+        } else if is_front_out_of_bounds(entity, canvas.clone()) {
+            break;
+        } else {
+            entity = move_forward(entity);
+            canvas = mark_visited(canvas, entity);
+        }
+    }
+    canvas
+}
+
 pub fn run() {
     // convert the map into x y
     // map store obsticle
@@ -216,21 +234,7 @@ pub fn run() {
     // else, count steps and update position
     match utils::file_reader::read_file("day6.txt") {
         Ok(contents) => {
-            let mut canvas = str_to_2d_canvas(&contents);
-            let obsticle = get_item_coordinates(canvas.clone(), '#');
-            let mut entity = get_entity_xy_dir(canvas.clone());
-
-            loop {
-                if !is_front_clear(entity, obsticle.clone()) {
-                    entity = turn_right(entity);
-                } else if is_front_out_of_bounds(entity, canvas.clone()) {
-                    break;
-                } else {
-                    entity = move_forward(entity);
-                    canvas = mark_visited(canvas, entity);
-                }
-            }
-
+            let canvas = get_visited_canvas(contents);
             println!("Visited: {}", count_visited(canvas));
         }
         Err(e) => println!("Err: {}", e),
@@ -528,5 +532,14 @@ mod test {
     #[test]
     fn test_test_run() {
         assert_eq!(test_run(), 41);
+    }
+
+    #[test]
+    fn test_get_visited_canvas() {
+        let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
+
+        let expected = str_to_2d_canvas("....#.....\n....XXXXX#\n....X...X.\n..#.X...X.\n..XXXXX#X.\n..X.X.X.X.\n.#XXXXXXX.\n.XXXXXXX#.\n#XXXXXXX..\n......#X..");
+
+        assert_eq!(get_visited_canvas(room_str.to_string()), expected);
     }
 }
