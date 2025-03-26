@@ -1,6 +1,9 @@
-use crate::days::day6_part1::{
-    get_entity_xy_dir, is_front_clear, is_front_out_of_bounds, mark_visited, move_forward,
-    str_to_2d_canvas, turn_right,
+use crate::{
+    days::day6_part1::{
+        get_entity_xy_dir, get_item_coordinates, get_visited_canvas, is_front_clear,
+        is_front_out_of_bounds, move_forward, str_to_2d_canvas, turn_right,
+    },
+    utils,
 };
 
 fn is_front_looping(entity_xy_dir: (i32, i32, i32), items: &[(i32, i32, i32)]) -> bool {
@@ -42,8 +45,6 @@ fn is_front_looping(entity_xy_dir: (i32, i32, i32), items: &[(i32, i32, i32)]) -
         _ => false,
     }
 }
-
-use super::day6_part1::get_item_coordinates;
 
 #[allow(dead_code)]
 pub fn test_run() -> i32 {
