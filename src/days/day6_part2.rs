@@ -1,3 +1,5 @@
+use std::io::{self, Write};
+
 use crate::{
     days::day6_part1::{
         get_entity_xy_dir, get_item_coordinates, get_visited_canvas, is_front_clear,
@@ -85,7 +87,6 @@ pub fn test_run() -> i32 {
 }
 
 pub fn run() {
-    println!("Day Six Part Two.");
     // for each of the mark visitted, add into a coordinate
     // add new obsticle 'O' in the canvas
     // move the entity
@@ -93,6 +94,55 @@ pub fn run() {
     // check for is_front_loop where it is checking for the visitted marker with entity direction
     // if it is a loop, store this new obsticle xy else continue foreach mark visited
     // finally count new obsticle created
+    match utils::file_reader::read_file("day6.txt") {
+        Ok(contents) => {
+            let visited_canvas = get_visited_canvas(contents.clone());
+            let marked = get_item_coordinates(visited_canvas.clone(), 'X');
+            let canvas = str_to_2d_canvas(&contents);
+            let obsticle = get_item_coordinates(canvas.clone(), '#');
+            let mut count_marker = 0;
+            let starting_point = get_entity_xy_dir(canvas.clone());
+            let (x, y, _) = starting_point;
+
+            for (i, &m) in marked.iter().enumerate() {
+                if m == (x, y) {
+                    continue;
+                }
+                let mut entity = starting_point;
+                let mut visited_with_direction: Vec<(i32, i32, i32)> = vec![];
+                let mut new_obs = obsticle.clone();
+                new_obs.push(m);
+                loop {
+                    print!("\r\x1b[2Kentity at {:?}", entity);
+                    io::stdout().flush().unwrap();
+                    print!("\x1b[1A"); // Move cursor up one line
+                    print!(
+                        "\r\x1b[2Krunning {} out of {} marked... found {} ",
+                        i,
+                        marked.iter().len(),
+                        count_marker
+                    );
+                    io::stdout().flush().unwrap();
+                    print!("\x1b[1B"); // Move cursor down one line
+
+                    if is_front_looping(entity, &visited_with_direction) {
+                        count_marker += 1;
+                        break;
+                    } else if !is_front_clear(entity, new_obs.clone()) {
+                        entity = turn_right(entity);
+                    } else if is_front_out_of_bounds(entity, canvas.clone()) {
+                        break;
+                    } else {
+                        visited_with_direction.push(entity);
+                        entity = move_forward(entity);
+                    }
+                }
+            }
+
+            println!("looping count {}", count_marker);
+        }
+        Err(e) => println!("Err: {}", e),
+    }
 }
 
 #[cfg(test)]
