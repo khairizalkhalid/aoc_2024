@@ -8,44 +8,8 @@ use crate::{
     utils,
 };
 
-fn is_front_looping(entity_xy_dir: (i32, i32, i32), items: &[(i32, i32, i32)]) -> bool {
-    let (ntt_x, ntt_y, ntt_dir) = entity_xy_dir;
-
-    match ntt_dir {
-        0 => {
-            let front_x = ntt_x;
-            let front_y = ntt_y - 1;
-            if items.contains(&(front_x, front_y, ntt_dir)) {
-                return true;
-            }
-            return false;
-        }
-        90 => {
-            let front_x = ntt_x + 1;
-            let front_y = ntt_y;
-            if items.contains(&(front_x, front_y, ntt_dir)) {
-                return true;
-            }
-            return false;
-        }
-        180 => {
-            let front_x = ntt_x;
-            let front_y = ntt_y + 1;
-            if items.contains(&(front_x, front_y, ntt_dir)) {
-                return true;
-            }
-            return false;
-        }
-        270 => {
-            let front_x = ntt_x - 1;
-            let front_y = ntt_y;
-            if items.contains(&(front_x, front_y, ntt_dir)) {
-                return true;
-            }
-            return false;
-        }
-        _ => false,
-    }
+fn is_looping(entity_xy_dir: (i32, i32, i32), items: &[(i32, i32, i32)]) -> bool {
+    items.contains(&entity_xy_dir)
 }
 
 #[allow(dead_code)]
@@ -69,7 +33,7 @@ pub fn test_run() -> i32 {
         let mut new_obs = obsticle.clone();
         new_obs.push(m);
         loop {
-            if is_front_looping(entity, &visited_with_direction) {
+            if is_looping(entity, &visited_with_direction) {
                 looping_marker.push(m);
                 break;
             } else if !is_front_clear(entity, new_obs.clone()) {
@@ -114,7 +78,6 @@ pub fn run() {
                 new_obs.push(m);
                 loop {
                     print!("\r\x1b[2Kentity at {:?}", entity);
-                    io::stdout().flush().unwrap();
                     print!("\x1b[1A"); // Move cursor up one line
                     print!(
                         "\r\x1b[2Krunning {} out of {} marked... found {} ",
@@ -125,7 +88,7 @@ pub fn run() {
                     io::stdout().flush().unwrap();
                     print!("\x1b[1B"); // Move cursor down one line
 
-                    if is_front_looping(entity, &visited_with_direction) {
+                    if is_looping(entity, &visited_with_direction) {
                         count_marker += 1;
                         break;
                     } else if !is_front_clear(entity, new_obs.clone()) {
@@ -152,24 +115,24 @@ mod test {
     #[test]
     fn test_is_front_looping() {
         let entity = (4, 1, 0);
-        let items = vec![(4, 0, 0), (9, 1, 0)];
+        let items = vec![(4, 1, 0), (9, 1, 0)];
 
-        assert_eq!(is_front_looping(entity, &items), true);
+        assert_eq!(is_looping(entity, &items), true);
 
         let entity = (4, 1, 90);
-        let items = vec![(5, 1, 90), (9, 1, 0)];
+        let items = vec![(4, 1, 90), (9, 1, 0)];
 
-        assert_eq!(is_front_looping(entity, &items), true);
+        assert_eq!(is_looping(entity, &items), true);
 
         let entity = (4, 1, 180);
-        let items = vec![(4, 2, 180), (9, 1, 0)];
+        let items = vec![(4, 1, 180), (9, 1, 0)];
 
-        assert_eq!(is_front_looping(entity, &items), true);
+        assert_eq!(is_looping(entity, &items), true);
 
         let entity = (4, 1, 270);
-        let items = vec![(3, 1, 270), (9, 1, 0)];
+        let items = vec![(4, 1, 270), (9, 1, 0)];
 
-        assert_eq!(is_front_looping(entity, &items), true);
+        assert_eq!(is_looping(entity, &items), true);
     }
 
     #[test]
