@@ -27,9 +27,28 @@ pub fn run() {
 mod test {
     use super::*;
 
+    //#[test]
+    //fn test_main() {
+    //    let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
+    //    assert_eq!(true, true);
+    //}
+
     #[test]
-    fn test_main() {
-        let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
-        assert_eq!(true, true);
+    fn test_get_distance_same_line_target() {
+        let entity = (1, 9, 0); // 0 degree/north
+        let targets = vec![(1, 1), (2, 2)];
+        assert_eq!(get_distance_same_line_target(entity, targets), 8);
+
+        let entity = (1, 1, 90); // 90 degree/east
+        let targets = vec![(8, 1), (2, 2)];
+        assert_eq!(get_distance_same_line_target(entity, targets), 7);
+
+        let entity = (1, 1, 180); // 180 degree/south
+        let targets = vec![(1, 2), (2, 2)];
+        assert_eq!(get_distance_same_line_target(entity, targets), 1);
+
+        let entity = (1, 1, 270); // 270 degree/west
+        let targets = vec![(0, 1), (2, 2)];
+        assert_eq!(get_distance_same_line_target(entity, targets), 1);
     }
 }
