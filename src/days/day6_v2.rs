@@ -33,6 +33,13 @@ fn get_visited_canvas(entity: (i32, i32, i32), targets: Vec<(i32, i32)>) -> Vec<
         }
     }
 
+    if let Some(last) = visited.last_mut() {
+        let (last_x, last_y, _) = *last;
+        if targets.contains(&(last_x, last_y)) {
+            *last = (last_x, last_y, (dir + 90) % 360);
+        }
+    }
+
     visited
 }
 
@@ -66,23 +73,23 @@ mod test {
             (1, 4, 0),
             (1, 3, 0),
             (1, 2, 0),
-            (1, 1, 0),
+            (1, 1, 90),
         ];
         assert_eq!(get_visited_canvas(entity, targets), expected);
 
         let entity = (1, 9, 90); // 90 degree/east
         let targets = vec![(5, 9), (13, 9)];
-        let expected = vec![(1, 9, 90), (2, 9, 90), (3, 9, 90), (4, 9, 90), (5, 9, 90)];
+        let expected = vec![(1, 9, 90), (2, 9, 90), (3, 9, 90), (4, 9, 90), (5, 9, 180)];
         assert_eq!(get_visited_canvas(entity, targets), expected);
 
         let entity = (1, 9, 180); // 180 degree/south
         let targets = vec![(1, 10), (1, 11)];
-        let expected = vec![(1, 9, 180), (1, 10, 180)];
+        let expected = vec![(1, 9, 180), (1, 10, 270)];
         assert_eq!(get_visited_canvas(entity, targets), expected);
 
         let entity = (1, 9, 270); // 270 degree/west
         let targets = vec![(0, 9)];
-        let expected = vec![(1, 9, 270), (0, 9, 270)];
+        let expected = vec![(1, 9, 270), (0, 9, 0)];
         assert_eq!(get_visited_canvas(entity, targets), expected);
     }
 }
