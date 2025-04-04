@@ -1,30 +1,52 @@
+use super::day6_part1::{get_entity_xy_dir, get_item_coordinates};
+
 fn get_visited_canvas(entity: (i32, i32, i32), targets: Vec<(i32, i32)>) -> Vec<(i32, i32, i32)> {
     let (x, y, dir) = entity;
     let mut visited: Vec<(i32, i32, i32)> = Vec::new();
+
+    let mut targets: Vec<(i32, i32)> = targets;
+    match dir {
+        0 => {
+            targets.sort_by(|a, b| a.1.cmp(&b.1));
+        }
+        90 => {
+            targets.sort_by(|a, b| a.0.cmp(&b.0));
+        }
+        180 => {
+            targets.sort_by(|a, b| a.1.cmp(&b.1));
+        }
+        270 => {
+            targets.sort_by(|a, b| a.0.cmp(&b.0));
+        }
+        _ => {
+            println!("Invalid direction: {}", dir);
+            return visited;
+        }
+    }
 
     for target in targets.iter() {
         let (tx, ty) = *target;
         match dir {
             0 if tx == x && ty < y => {
-                for i in (ty..=y).rev() {
+                for i in (ty..y).skip(1).rev() {
                     visited.push((x, i, dir));
                 }
                 break;
             }
             90 if tx > x && ty == y => {
-                for i in x..=tx {
+                for i in (x..tx).skip(1) {
                     visited.push((i, y, dir));
                 }
                 break;
             }
             180 if tx == x && ty > y => {
-                for i in y..=ty {
+                for i in (y..ty).skip(1) {
                     visited.push((x, i, dir));
                 }
                 break;
             }
             270 if tx < x && ty == y => {
-                for i in (tx..=x).rev() {
+                for i in (tx..x).skip(1).rev() {
                     visited.push((i, y, dir));
                 }
                 break;
@@ -35,9 +57,7 @@ fn get_visited_canvas(entity: (i32, i32, i32), targets: Vec<(i32, i32)>) -> Vec<
 
     if let Some(last) = visited.last_mut() {
         let (last_x, last_y, _) = *last;
-        if targets.contains(&(last_x, last_y)) {
-            *last = (last_x, last_y, (dir + 90) % 360);
-        }
+        *last = (last_x, last_y, (dir + 90) % 360);
     }
 
     visited
@@ -65,31 +85,34 @@ mod test {
         let entity = (1, 9, 0); // 0 degree/north
         let targets = vec![(1, 1), (2, 2)];
         let expected = vec![
-            (1, 9, 0),
             (1, 8, 0),
             (1, 7, 0),
             (1, 6, 0),
             (1, 5, 0),
             (1, 4, 0),
             (1, 3, 0),
-            (1, 2, 0),
-            (1, 1, 90),
+            (1, 2, 90),
         ];
         assert_eq!(get_visited_canvas(entity, targets), expected);
 
         let entity = (1, 9, 90); // 90 degree/east
         let targets = vec![(5, 9), (13, 9)];
-        let expected = vec![(1, 9, 90), (2, 9, 90), (3, 9, 90), (4, 9, 90), (5, 9, 180)];
+        let expected = vec![(2, 9, 90), (3, 9, 90), (4, 9, 180)];
         assert_eq!(get_visited_canvas(entity, targets), expected);
 
         let entity = (1, 9, 180); // 180 degree/south
-        let targets = vec![(1, 10), (1, 11)];
-        let expected = vec![(1, 9, 180), (1, 10, 270)];
+        let targets = vec![(1, 12), (1, 11)];
+        let expected = vec![(1, 10, 270)];
         assert_eq!(get_visited_canvas(entity, targets), expected);
 
-        let entity = (1, 9, 270); // 270 degree/west
+        let entity = (2, 9, 270); // 270 degree/west
         let targets = vec![(0, 9)];
-        let expected = vec![(1, 9, 270), (0, 9, 0)];
+        let expected = vec![(1, 9, 0)];
+        assert_eq!(get_visited_canvas(entity, targets), expected);
+
+        let entity = (2, 9, 270); // 270 degree/west
+        let targets = vec![(1, 9)];
+        let expected = vec![];
         assert_eq!(get_visited_canvas(entity, targets), expected);
     }
 }
