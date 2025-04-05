@@ -74,6 +74,36 @@ fn get_unique_visited_xy(visited_canvas: Vec<(i32, i32, i32)>) -> Vec<(i32, i32)
         .collect::<Vec<(i32, i32)>>()
 }
 
+fn get_visited_to_exit(entity: (i32, i32, i32), canvas_size: (i32, i32)) -> Vec<(i32, i32, i32)> {
+    let (x, y, dir) = entity;
+    let mut visited: Vec<(i32, i32, i32)> = Vec::new();
+    let (canvas_x_max, canvas_y_max) = canvas_size;
+    match dir {
+        0 => {
+            for i in 0..y {
+                visited.push((x, i, dir));
+            }
+        }
+        90 => {
+            for i in (x..canvas_x_max).skip(1) {
+                visited.push((i, y, dir));
+            }
+        }
+        180 => {
+            for i in (y..canvas_y_max).skip(1) {
+                visited.push((x, i, dir));
+            }
+        }
+        270 => {
+            for i in 0..x {
+                visited.push((i, y, dir));
+            }
+        }
+        _ => {}
+    }
+    visited
+}
+
 pub fn run() {
     // recurr
     // if obs found change ntt to tobs -1 +90
@@ -84,7 +114,6 @@ pub fn run() {
 #[cfg(test)]
 mod test {
     use super::*;
-
 
     #[test]
     fn test_get_visited_canvas() {
@@ -127,5 +156,37 @@ mod test {
         let visited_canvas = vec![(1, 2, 0), (1, 2, 90), (1, 2, 180), (1, 2, 270)];
         let expected = vec![(1, 2)];
         assert_eq!(get_unique_visited_xy(visited_canvas), expected);
+    }
+
+    #[test]
+    fn test_get_visited_to_exit() {
+        let entity = (1, 1, 0);
+        let canvas_size = (5, 10);
+        let expected = vec![(1, 0, 0)];
+        assert_eq!(get_visited_to_exit(entity, canvas_size), expected);
+
+        let entity = (1, 1, 90);
+        let canvas_size = (5, 10);
+        let expected = vec![(2, 1, 90), (3, 1, 90), (4, 1, 90)];
+        assert_eq!(get_visited_to_exit(entity, canvas_size), expected);
+
+        let entity = (1, 1, 180);
+        let canvas_size = (5, 10);
+        let expected = vec![
+            (1, 2, 180),
+            (1, 3, 180),
+            (1, 4, 180),
+            (1, 5, 180),
+            (1, 6, 180),
+            (1, 7, 180),
+            (1, 8, 180),
+            (1, 9, 180),
+        ];
+        assert_eq!(get_visited_to_exit(entity, canvas_size), expected);
+
+        let entity = (1, 1, 270);
+        let canvas_size = (5, 10);
+        let expected = vec![(0, 1, 270)];
+        assert_eq!(get_visited_to_exit(entity, canvas_size), expected);
     }
 }
