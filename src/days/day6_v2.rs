@@ -104,11 +104,35 @@ fn get_visited_to_exit(entity: (i32, i32, i32), canvas_size: (i32, i32)) -> Vec<
     visited
 }
 
-pub fn run() {
-    // recurr
-    // if obs found change ntt to tobs -1 +90
-    // get distance of ntt to tobs and add in steps
-    // no obs on path exit
+pub fn run(canvas: &str) -> i32 {
+    // loop through obstacles and compare with entity
+    // get visited canvas then change direction
+    // update entity xy dir up to the next obsticle
+    // loop until out of bounds
+    // count visited canvas
+
+    let canvas_vec: Vec<Vec<char>> = canvas.lines().map(|line| line.chars().collect()).collect();
+    let mut visited_canvas: Vec<(i32, i32, i32)> = Vec::new();
+    let mut entity = get_entity_xy_dir(canvas_vec.clone());
+    let obsticle = get_item_coordinates(canvas_vec.clone(), '#');
+    let canvas_x_max = canvas_vec[0].len() as i32;
+    let canvas_y_max = canvas_vec.len() as i32;
+
+    while entity.0 >= 0 && entity.0 <= canvas_x_max && entity.1 >= 0 && entity.1 <= canvas_y_max {
+        let visited = get_visited_canvas(entity, obsticle.clone());
+        visited_canvas.extend(&visited);
+
+        if !visited.is_empty() {
+            entity = visited.last().unwrap().clone();
+        } else {
+            let to_exit_path = get_visited_to_exit(entity, (canvas_x_max, canvas_y_max));
+            visited_canvas.extend(&to_exit_path);
+            break;
+        }
+    }
+
+    let unique_visited_xy = get_unique_visited_xy(visited_canvas);
+    unique_visited_xy.iter().count() as i32
 }
 
 #[cfg(test)]
@@ -188,5 +212,12 @@ mod test {
         let canvas_size = (5, 10);
         let expected = vec![(0, 1, 270)];
         assert_eq!(get_visited_to_exit(entity, canvas_size), expected);
+    }
+
+    #[test]
+    fn test_run() {
+        let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
+        let expected = 41;
+        assert_eq!(run(room_str), expected);
     }
 }
