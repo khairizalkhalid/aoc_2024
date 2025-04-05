@@ -63,6 +63,17 @@ fn get_visited_canvas(entity: (i32, i32, i32), targets: Vec<(i32, i32)>) -> Vec<
     visited
 }
 
+fn get_unique_visited_xy(visited_canvas: Vec<(i32, i32, i32)>) -> Vec<(i32, i32)> {
+    visited_canvas
+        .iter()
+        .map(|(x, y, _)| (*x, *y))
+        .collect::<Vec<(i32, i32)>>()
+        .into_iter()
+        .collect::<std::collections::HashSet<_>>()
+        .into_iter()
+        .collect::<Vec<(i32, i32)>>()
+}
+
 pub fn run() {
     // recurr
     // if obs found change ntt to tobs -1 +90
@@ -74,11 +85,6 @@ pub fn run() {
 mod test {
     use super::*;
 
-    //#[test]
-    //fn test_main() {
-    //    let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
-    //    assert_eq!(true, true);
-    //}
 
     #[test]
     fn test_get_visited_canvas() {
@@ -114,5 +120,12 @@ mod test {
         let targets = vec![(1, 9)];
         let expected = vec![];
         assert_eq!(get_visited_canvas(entity, targets), expected);
+    }
+
+    #[test]
+    fn test_get_unique_visited_xy() {
+        let visited_canvas = vec![(1, 2, 0), (1, 2, 90), (1, 2, 180), (1, 2, 270)];
+        let expected = vec![(1, 2)];
+        assert_eq!(get_unique_visited_xy(visited_canvas), expected);
     }
 }
