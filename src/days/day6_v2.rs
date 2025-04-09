@@ -1,3 +1,5 @@
+use crate::utils;
+
 use super::day6_part1::{get_entity_xy_dir, get_item_coordinates};
 
 fn get_visited_canvas(entity: (i32, i32, i32), targets: Vec<(i32, i32)>) -> Vec<(i32, i32, i32)> {
@@ -104,7 +106,7 @@ fn get_visited_to_exit(entity: (i32, i32, i32), canvas_size: (i32, i32)) -> Vec<
     visited
 }
 
-pub fn run(canvas: &str) -> i32 {
+fn part1(canvas: &str) -> i32 {
     // loop through obstacles and compare with entity
     // get visited canvas then change direction
     // update entity xy dir up to the next obsticle
@@ -133,6 +135,16 @@ pub fn run(canvas: &str) -> i32 {
 
     let unique_visited_xy = get_unique_visited_xy(visited_canvas);
     unique_visited_xy.iter().count() as i32
+}
+
+pub fn run() {
+    match utils::file_reader::read_file("day6.txt") {
+        Ok(contents) => {
+            let canvas = part1(&contents);
+            println!("Visited canvas: {}", canvas);
+        }
+        Err(e) => println!("Err: {}", e),
+    }
 }
 
 #[cfg(test)]
@@ -218,6 +230,6 @@ mod test {
     fn test_run() {
         let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
         let expected = 41;
-        assert_eq!(run(room_str), expected);
+        assert_eq!(part1(room_str), expected);
     }
 }

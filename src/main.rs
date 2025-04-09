@@ -47,6 +47,7 @@ fn main() {
     functions.insert("d5p2", || days::day5_part2::run());
     functions.insert("d6p1", || days::day6_part1::run());
     functions.insert("d6p2", || days::day6_part2::run());
+    functions.insert("d6v2", || days::day6_v2::run());
 
     if let Some(&function) = functions.get(day.as_str()) {
         time_elapsed_wrapper(function);
