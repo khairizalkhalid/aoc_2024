@@ -104,3 +104,26 @@ pub fn run() {
         Err(e) => println!("Err: {}", e),
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_count_word() {
+        let test_str = "MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX";
+        let str_coordinate: Vec<Vec<char>> =
+            test_str.lines().map(|l| l.chars().collect()).collect();
+
+        assert_eq!(count_word(TARGET_WORD, &str_coordinate), 9);
+    }
+}
