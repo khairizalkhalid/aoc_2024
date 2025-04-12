@@ -126,4 +126,30 @@ MXMXAXMASX";
 
         assert_eq!(count_word(TARGET_WORD, &str_coordinate), 9);
     }
+
+    #[test]
+    fn test_is_half_cross() {
+        let test_str = "MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX";
+        let str_coordinate: Vec<Vec<char>> =
+            test_str.lines().map(|l| l.chars().collect()).collect();
+
+        assert_eq!(
+            is_half_cross(
+                &[(1, 1), (-1, -1)],
+                &TARGET_WORD.chars().collect::<Vec<_>>(),
+                (2, 4),
+                &str_coordinate
+            ),
+            true
+        );
+    }
 }
