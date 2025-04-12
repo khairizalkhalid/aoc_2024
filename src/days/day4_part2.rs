@@ -152,4 +152,30 @@ MXMXAXMASX";
             true
         );
     }
+
+    #[test]
+    fn test_is_match_x() {
+        let test_str = "MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX";
+
+        let str_coordinate: Vec<Vec<char>> =
+            test_str.lines().map(|l| l.chars().collect()).collect();
+
+        assert_eq!(
+            is_match_x(
+                &TARGET_WORD.chars().collect::<Vec<_>>(),
+                (2, 1),
+                &str_coordinate
+            ),
+            true
+        );
+    }
 }
