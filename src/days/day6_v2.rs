@@ -4,62 +4,37 @@ use super::day6_part1::{get_entity_xy_dir, get_item_coordinates};
 
 fn get_visited_canvas(entity: (i32, i32, i32), targets: Vec<(i32, i32)>) -> Vec<(i32, i32, i32)> {
     let (x, y, dir) = entity;
-    let mut visited: Vec<(i32, i32, i32)> = Vec::new();
+    let mut visited = Vec::new();
 
-    let mut targets: Vec<(i32, i32)> = targets;
-    match dir {
-        0 => {
-            targets.sort_by(|a, b| a.1.cmp(&b.1));
-        }
-        90 => {
-            targets.sort_by(|a, b| a.0.cmp(&b.0));
-        }
-        180 => {
-            targets.sort_by(|a, b| a.1.cmp(&b.1));
-        }
-        270 => {
-            targets.sort_by(|a, b| a.0.cmp(&b.0));
-        }
-        _ => {
-            println!("Invalid direction: {}", dir);
-            return visited;
-        }
-    }
+    let closest_target = targets
+        .into_iter()
+        .filter(|&(tx, ty)| match dir {
+            0 => tx == x && ty < y,   // Up
+            90 => ty == y && tx > x,  // Right
+            180 => tx == x && ty > y, // Down
+            270 => ty == y && tx < x, // Left
+            _ => false,
+        })
+        .min_by_key(|&(tx, ty)| match dir {
+            0 => y - ty,   // Distance for Up
+            90 => tx - x,  // Distance for Right
+            180 => ty - y, // Distance for Down
+            270 => x - tx, // Distance for Left
+            _ => i32::MAX,
+        });
 
-    for target in targets.iter() {
-        let (tx, ty) = *target;
+    if let Some((tx, ty)) = closest_target {
         match dir {
-            0 if tx == x && ty < y => {
-                for i in (ty..y).skip(1).rev() {
-                    visited.push((x, i, dir));
-                }
-                break;
-            }
-            90 if tx > x && ty == y => {
-                for i in (x..tx).skip(1) {
-                    visited.push((i, y, dir));
-                }
-                break;
-            }
-            180 if tx == x && ty > y => {
-                for i in (y..ty).skip(1) {
-                    visited.push((x, i, dir));
-                }
-                break;
-            }
-            270 if tx < x && ty == y => {
-                for i in (tx..x).skip(1).rev() {
-                    visited.push((i, y, dir));
-                }
-                break;
-            }
+            0 => visited.extend((ty + 1..y).rev().map(|i| (x, i, dir))), // Up
+            90 => visited.extend((x + 1..tx).map(|i| (i, y, dir))),      // Right
+            180 => visited.extend((y + 1..ty).map(|i| (x, i, dir))),     // Down
+            270 => visited.extend((tx + 1..x).rev().map(|i| (i, y, dir))), // Left
             _ => {}
         }
-    }
 
-    if let Some(last) = visited.last_mut() {
-        let (last_x, last_y, _) = *last;
-        *last = (last_x, last_y, (dir + 90) % 360);
+        if let Some(last) = visited.last_mut() {
+            last.2 = (dir + 90) % 360;
+        }
     }
 
     visited
@@ -122,9 +97,9 @@ fn part1(canvas: &str) -> i32 {
 
     while entity.0 >= 0 && entity.0 <= canvas_x_max && entity.1 >= 0 && entity.1 <= canvas_y_max {
         let visited = get_visited_canvas(entity, obsticle.clone());
-        visited_canvas.extend(&visited);
 
         if !visited.is_empty() {
+            visited_canvas.extend(&visited);
             entity = visited.last().unwrap().clone();
         } else {
             let to_exit_path = get_visited_to_exit(entity, (canvas_x_max, canvas_y_max));
