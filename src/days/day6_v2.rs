@@ -42,13 +42,11 @@ fn get_visited_canvas(entity: (i32, i32, i32), targets: Vec<(i32, i32)>) -> Vec<
 
 fn get_unique_visited_xy(visited_canvas: Vec<(i32, i32, i32)>) -> Vec<(i32, i32)> {
     visited_canvas
-        .iter()
-        .map(|(x, y, _)| (*x, *y))
-        .collect::<Vec<(i32, i32)>>()
         .into_iter()
+        .map(|(x, y, _)| (x, y))
         .collect::<std::collections::HashSet<_>>()
         .into_iter()
-        .collect::<Vec<(i32, i32)>>()
+        .collect()
 }
 
 fn get_visited_to_exit(entity: (i32, i32, i32), canvas_size: (i32, i32)) -> Vec<(i32, i32, i32)> {
