@@ -51,31 +51,16 @@ fn get_unique_visited_xy(visited_canvas: Vec<(i32, i32, i32)>) -> Vec<(i32, i32)
 
 fn get_visited_to_exit(entity: (i32, i32, i32), canvas_size: (i32, i32)) -> Vec<(i32, i32, i32)> {
     let (x, y, dir) = entity;
-    let mut visited: Vec<(i32, i32, i32)> = Vec::new();
     let (canvas_x_max, canvas_y_max) = canvas_size;
-    match dir {
-        0 => {
-            for i in 0..y {
-                visited.push((x, i, dir));
-            }
-        }
-        90 => {
-            for i in (x..canvas_x_max).skip(1) {
-                visited.push((i, y, dir));
-            }
-        }
-        180 => {
-            for i in (y..canvas_y_max).skip(1) {
-                visited.push((x, i, dir));
-            }
-        }
-        270 => {
-            for i in 0..x {
-                visited.push((i, y, dir));
-            }
-        }
-        _ => {}
-    }
+
+    let visited = match dir {
+        0 => (0..y).rev().map(|i| (x, i, dir)).collect(), // Up
+        90 => ((x + 1)..canvas_x_max).map(|i| (i, y, dir)).collect(), // Right
+        180 => ((y + 1)..canvas_y_max).map(|i| (x, i, dir)).collect(), // Down
+        270 => (0..x).rev().map(|i| (i, y, dir)).collect(), // Left
+        _ => Vec::new(),
+    };
+
     visited
 }
 
