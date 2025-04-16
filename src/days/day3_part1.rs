@@ -1,23 +1,20 @@
-use regex::Regex;
-
 use crate::utils;
 
 pub fn sum_of_muls(mul_string: &str) -> i32 {
-    let reg = Regex::new(r"mul\(\d+,\d+\)").unwrap();
-    let reg_matches: Vec<_> = reg.find_iter(mul_string).map(|m| m.as_str()).collect();
+    let mut sum = 0;
 
-    reg_matches
-        .iter()
-        .filter_map(|m| {
-            m.strip_prefix("mul(")
-                .and_then(|s| s.strip_suffix(")"))
-                .map(|s| {
-                    s.split(',')
-                        .map(|n| n.parse::<i32>().unwrap())
-                        .product::<i32>()
-                })
-        })
-        .sum()
+    for part in mul_string.split("mul(").skip(1) {
+        if let Some(end) = part.find(')') {
+            let numbers = &part[..end];
+            if let Some((a, b)) = numbers.split_once(',') {
+                if let (Ok(a), Ok(b)) = (a.parse::<i32>(), b.parse::<i32>()) {
+                    sum += a * b;
+                }
+            }
+        }
+    }
+
+    sum
 }
 
 pub fn test_run() {
