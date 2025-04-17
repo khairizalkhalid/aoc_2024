@@ -95,6 +95,10 @@ fn part1(canvas: &str) -> i32 {
     unique_visited_xy.iter().count() as i32
 }
 
+fn part2(canvas: &str) -> i32 {
+    // add part 2 here...
+}
+
 pub fn run() {
     match utils::file_reader::read_file("day6.txt") {
         Ok(contents) => {
