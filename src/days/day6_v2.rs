@@ -97,6 +97,12 @@ fn part1(canvas: &str) -> i32 {
 
 fn part2(canvas: &str) -> i32 {
     // add part 2 here...
+    // for each of the unique_visited in part 1
+    // add it as obsticle
+    // get visited_canvas
+    // when hit is_looping (new fn), loop_count++, break
+    // get loop_count
+    0
 }
 
 pub fn run() {
