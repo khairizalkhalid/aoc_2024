@@ -64,13 +64,7 @@ fn get_visited_to_exit(entity: (i32, i32, i32), canvas_size: (i32, i32)) -> Vec<
     visited
 }
 
-fn part1(canvas: &str) -> i32 {
-    // loop through obstacles and compare with entity
-    // get visited canvas then change direction
-    // update entity xy dir up to the next obsticle
-    // loop until out of bounds
-    // count visited canvas
-
+fn part1_vec(canvas: &str) -> Vec<(i32, i32)> {
     let canvas_vec: Vec<Vec<char>> = canvas.lines().map(|line| line.chars().collect()).collect();
     let mut visited_canvas: Vec<(i32, i32, i32)> = Vec::new();
     let mut entity = get_entity_xy_dir(canvas_vec.clone());
@@ -91,8 +85,16 @@ fn part1(canvas: &str) -> i32 {
         }
     }
 
-    let unique_visited_xy = get_unique_visited_xy(visited_canvas);
-    unique_visited_xy.iter().count() as i32
+    get_unique_visited_xy(visited_canvas)
+}
+
+fn part1(canvas: &str) -> i32 {
+    // loop through obstacles and compare with entity
+    // get visited canvas then change direction
+    // update entity xy dir up to the next obsticle
+    // loop until out of bounds
+    // count visited canvas
+    part1_vec(canvas).iter().count() as i32
 }
 
 fn part2(canvas: &str) -> i32 {
