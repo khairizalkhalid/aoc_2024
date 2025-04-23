@@ -1,3 +1,5 @@
+use std::io::{self, Write};
+
 use crate::utils;
 
 use super::day6_part1::{get_entity_xy_dir, get_item_coordinates};
@@ -104,13 +106,52 @@ fn part2(canvas: &str) -> i32 {
     // get visited_canvas
     // when hit is_looping (new fn), loop_count++, break
     // get loop_count
-    0
+    let unique_visited_xy = part1_vec(canvas);
+
+    let mut loop_count = 0;
+
+    for (uv_no, &uv) in unique_visited_xy.iter().enumerate() {
+        print!("\x1b[1A"); // Move cursor up one line
+        print!("\r\x1b[2KProgress: {}/{}", uv_no, unique_visited_xy.len());
+        io::stdout().flush().unwrap();
+        print!("\x1b[1B"); // Move cursor down one line
+
+        let canvas_vec: Vec<Vec<char>> =
+            canvas.lines().map(|line| line.chars().collect()).collect();
+        let mut obsticle = get_item_coordinates(canvas_vec.clone(), '#');
+        obsticle.push(uv);
+        let mut visited_canvas: Vec<(i32, i32, i32)> = Vec::new();
+        let mut entity = get_entity_xy_dir(canvas_vec.clone());
+        let canvas_x_max = canvas_vec[0].len() as i32;
+        let canvas_y_max = canvas_vec.len() as i32;
+
+        while entity.0 >= 0 && entity.0 <= canvas_x_max && entity.1 >= 0 && entity.1 <= canvas_y_max
+        {
+            let visited = get_visited_canvas(entity, obsticle.clone());
+
+            if !visited.is_empty() {
+                if visited_canvas.iter().any(|&v| visited.contains(&v)) {
+                    loop_count += 1;
+                    break;
+                }
+
+                visited_canvas.extend(&visited);
+                entity = visited.last().unwrap().clone();
+            } else {
+                let to_exit_path = get_visited_to_exit(entity, (canvas_x_max, canvas_y_max));
+                visited_canvas.extend(&to_exit_path);
+                break;
+            }
+        }
+    }
+
+    loop_count
 }
 
 pub fn run() {
     match utils::file_reader::read_file("day6.txt") {
         Ok(contents) => {
-            let canvas = part1(&contents);
+            let canvas = part2(&contents);
             println!("Visited canvas: {}", canvas);
         }
         Err(e) => println!("Err: {}", e),
@@ -201,5 +242,6 @@ mod test {
         let room_str = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...";
         let expected = 41;
         assert_eq!(part1(room_str), expected);
+        assert_eq!(part2(room_str), 6);
     }
 }
