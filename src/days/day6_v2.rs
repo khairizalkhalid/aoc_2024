@@ -148,11 +148,18 @@ fn part2(canvas: &str) -> i32 {
     loop_count
 }
 
-pub fn run() {
+pub fn run(option: i8) {
     match utils::file_reader::read_file("day6.txt") {
         Ok(contents) => {
-            let canvas = part2(&contents);
-            println!("Visited canvas: {}", canvas);
+            if option == 1 {
+                let canvas = part2(&contents);
+                println!("Visited canvas: {}", canvas);
+            } else if option == 2 {
+                let canvas = part2(&contents);
+                println!("Visited canvas: {}", canvas);
+            } else {
+                println!("Unknown option used, expected 1 or 2");
+            }
         }
         Err(e) => println!("Err: {}", e),
     }
