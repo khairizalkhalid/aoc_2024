@@ -152,7 +152,7 @@ pub fn run(option: i8) {
     match utils::file_reader::read_file("day6.txt") {
         Ok(contents) => {
             if option == 1 {
-                let canvas = part2(&contents);
+                let canvas = part1(&contents);
                 println!("Visited canvas: {}", canvas);
             } else if option == 2 {
                 let canvas = part2(&contents);
