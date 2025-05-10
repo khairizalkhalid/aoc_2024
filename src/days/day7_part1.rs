@@ -13,3 +13,9 @@
 // task: in each line, find which one is correct if "x : a b c" where x must be equal a, b, c using
 // operators "+" and "*"
 // then add up all the one that is correct.
+
+fn is_valid_config(calib: i32, configs: Vec<i32>) -> bool {
+    // in configs, calculate using 2 operators (+ and *)
+    // if either is exceeding the calib, return false
+    // end loop, total is equal calib, return true else false
+}
