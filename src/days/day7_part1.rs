@@ -18,4 +18,12 @@ fn is_valid_config(calib: i32, configs: Vec<i32>) -> bool {
     // in configs, calculate using 2 operators (+ and *)
     // if either is exceeding the calib, return false
     // end loop, total is equal calib, return true else false
+
+    let mut cfg_ops_result = 1;
+
+    configs
+        .windows(2)
+        .for_each(|cfgs| cfg_ops_result = cfgs[0] * cfgs[1]);
+
+    cfg_ops_result == calib
 }
