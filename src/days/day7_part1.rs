@@ -19,11 +19,11 @@ fn is_valid_config(calib: i32, configs: Vec<i32>) -> bool {
     // if either is exceeding the calib, return false
     // end loop, total is equal calib, return true else false
 
-    let mut cfg_ops_result = 1;
+    let mut cfg_ops_result = configs[0];
 
-    configs
-        .windows(2)
-        .for_each(|cfgs| cfg_ops_result = cfgs[0] * cfgs[1]);
+    for &val in configs.iter().skip(1) {
+        cfg_ops_result *= val;
+    }
 
     cfg_ops_result == calib
 }
@@ -37,5 +37,9 @@ mod test {
         let calib_1 = 190;
         let configs_1 = vec![10, 19];
         assert_eq!(is_valid_config(calib_1, configs_1), true);
+
+        let calib_2 = 3267;
+        let configs_2 = vec![81, 40, 27];
+        assert_eq!(is_valid_config(calib_2, configs_2), true);
     }
 }
