@@ -27,3 +27,15 @@ fn is_valid_config(calib: i32, configs: Vec<i32>) -> bool {
 
     cfg_ops_result == calib
 }
+
+#[cfg(test)]
+mod test {
+    use crate::days::day7_part1::is_valid_config;
+
+    #[test]
+    fn test_is_valid_config() {
+        let calib_1 = 190;
+        let configs_1 = vec![10, 19];
+        assert_eq!(is_valid_config(calib_1, configs_1), true);
+    }
+}
