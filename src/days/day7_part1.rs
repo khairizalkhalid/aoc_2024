@@ -28,6 +28,33 @@ fn is_valid_config(calib: i32, configs: Vec<i32>) -> bool {
     cfg_ops_result == calib
 }
 
+// function to write plus or multiply permutations based on the number of configs minus 1
+// e.g. if configs = [1, 2, 3], then we have 2 operators to choose from
+// we can have 2^2 = 4 permutations
+// we can use a bitmask to generate the permutations
+// ie: 0: [ "+", "+" ]
+// 1: [ "+", "*" ]
+// 2: [ "*", "+" ]
+// 3: [ "*", "*" ]
+fn generate_permutations(num_configs: usize) -> Vec<Vec<&'static str>> {
+    let mut permutations = Vec::new();
+    let total_permutations = 1 << (num_configs - 1); // 2^(num_configs - 1)
+
+    for i in 0..total_permutations {
+        let mut ops = Vec::new();
+        for j in 0..(num_configs - 1) {
+            if (i & (1 << j)) != 0 {
+                ops.push("*");
+            } else {
+                ops.push("+");
+            }
+        }
+        permutations.push(ops);
+    }
+
+    permutations
+}
+
 #[cfg(test)]
 mod test {
     use crate::days::day7_part1::is_valid_config;
