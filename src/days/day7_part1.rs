@@ -21,8 +21,23 @@ fn is_valid_config(calib: i32, configs: Vec<i32>) -> bool {
 
     let mut cfg_ops_result = configs[0];
 
-    for &val in configs.iter().skip(1) {
-        cfg_ops_result *= val;
+    let permutations = generate_permutations(configs.len());
+
+    for ops in permutations {
+        cfg_ops_result = configs[0];
+        for (i, op) in ops.iter().enumerate() {
+            if i + 1 < configs.len() {
+                match *op {
+                    "+" => cfg_ops_result += configs[i + 1],
+                    "*" => cfg_ops_result *= configs[i + 1],
+                    _ => unreachable!(),
+                }
+            }
+        }
+
+        if cfg_ops_result == calib {
+            return true;
+        }
     }
 
     cfg_ops_result == calib
