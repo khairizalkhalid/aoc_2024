@@ -1,15 +1,3 @@
-// test case:
-//
-// 190: 10 19
-// 3267: 81 40 27
-// 83: 17 5
-// 156: 15 6
-// 7290: 6 8 6 15
-// 161011: 16 10 13
-// 192: 17 8 14
-// 21037: 9 7 18 13
-// 292: 11 6 16 20
-//
 // task: in each line, find which one is correct if "x : a b c" where x must be equal a, b, c using
 // operators "+" and "*"
 // then add up all the one that is correct.
@@ -74,18 +62,29 @@ fn generate_permutations(num_configs: usize) -> Vec<Vec<&'static str>> {
 mod test {
     use crate::days::day7_part1::{generate_permutations, is_valid_config};
 
-
     #[test]
     fn test_is_valid_config() {
-        let calib_1 = 190;
-        let configs_1 = vec![10, 19];
-        assert_eq!(is_valid_config(calib_1, configs_1), true);
-
-        let calib_2 = 3267;
-        let configs_2 = vec![81, 40, 27];
-        assert_eq!(is_valid_config(calib_2, configs_2), true);
+        // 190: 10 19 (true)
+        // 3267: 81 40 27 (true)
+        // 83: 17 5
+        // 156: 15 6
+        // 7290: 6 8 6 15
+        // 161011: 16 10 13
+        // 192: 17 8 14
+        // 21037: 9 7 18 13
+        // 292: 11 6 16 20 (true)
+        assert_eq!(is_valid_config(190, vec![10, 19]), true);
+        assert_eq!(is_valid_config(3267, vec![81, 40, 27]), true);
+        assert_eq!(is_valid_config(83, vec![17, 5]), false);
+        assert_eq!(is_valid_config(156, vec![15, 6]), false);
+        assert_eq!(is_valid_config(7290, vec![6, 8, 6, 15]), false);
+        assert_eq!(is_valid_config(161011, vec![16, 10, 13]), false);
+        assert_eq!(is_valid_config(192, vec![17, 8, 14]), false);
+        assert_eq!(is_valid_config(292, vec![11, 6, 16, 20]), true);
+        assert_eq!(is_valid_config(21037, vec![9, 7, 18, 13]), false);
     }
 
+    #[test]
     fn test_generate_permutations() {
         let permutations = generate_permutations(3);
         assert_eq!(permutations.len(), 4);
