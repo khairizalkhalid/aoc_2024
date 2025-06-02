@@ -58,6 +58,17 @@ fn generate_permutations(num_configs: usize) -> Vec<Vec<&'static str>> {
     permutations
 }
 
+fn get_calibration_and_configs(line: &str) -> (i32, Vec<i32>) {
+    let parts: Vec<&str> = line.split(':').collect();
+    let calib: i32 = parts[0].trim().parse().unwrap();
+    let configs: Vec<i32> = parts[1]
+        .trim()
+        .split_whitespace()
+        .map(|s| s.parse().unwrap())
+        .collect();
+    (calib, configs)
+}
+
 #[cfg(test)]
 mod test {
     use crate::days::day7_part1::{generate_permutations, is_valid_config};
