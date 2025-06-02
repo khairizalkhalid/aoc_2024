@@ -71,7 +71,9 @@ fn get_calibration_and_configs(line: &str) -> (i32, Vec<i32>) {
 
 #[cfg(test)]
 mod test {
-    use crate::days::day7_part1::{generate_permutations, is_valid_config};
+    use crate::days::day7_part1::{
+        generate_permutations, get_calibration_and_configs, is_valid_config,
+    };
 
     #[test]
     fn test_is_valid_config() {
@@ -113,5 +115,18 @@ mod test {
         assert_eq!(permutations[5], vec!["*", "+", "*"]);
         assert_eq!(permutations[6], vec!["+", "*", "*"]);
         assert_eq!(permutations[7], vec!["*", "*", "*"]);
+    }
+
+    #[test]
+    fn test_get_calibration_and_configs() {
+        let line = "190: 10 19";
+        let (calib, configs) = get_calibration_and_configs(line);
+        assert_eq!(calib, 190);
+        assert_eq!(configs, vec![10, 19]);
+
+        let line = "3267: 81 40 27";
+        let (calib, configs) = get_calibration_and_configs(line);
+        assert_eq!(calib, 3267);
+        assert_eq!(configs, vec![81, 40, 27]);
     }
 }
