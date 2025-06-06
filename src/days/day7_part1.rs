@@ -69,6 +69,19 @@ fn get_calibration_and_configs(line: &str) -> (i32, Vec<i32>) {
     (calib, configs)
 }
 
+fn get_total_valid_calibrations(input: &str) -> i32 {
+    let mut total = 0;
+
+    for line in input.lines() {
+        let (calib, configs) = get_calibration_and_configs(line);
+        if is_valid_config(calib, configs) {
+            total += calib;
+        }
+    }
+
+    total
+}
+
 #[cfg(test)]
 mod test {
     use crate::days::day7_part1::{
