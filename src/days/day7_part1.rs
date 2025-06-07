@@ -2,7 +2,7 @@
 // operators "+" and "*"
 // then add up all the one that is correct.
 
-fn is_valid_config(calib: i32, configs: Vec<i32>) -> bool {
+fn is_valid_config(calib: i64, configs: Vec<i64>) -> bool {
     // in configs, calculate using 2 operators (+ and *)
     // if either is exceeding the calib, return false
     // end loop, total is equal calib, return true else false
@@ -58,10 +58,10 @@ fn generate_permutations(num_configs: usize) -> Vec<Vec<&'static str>> {
     permutations
 }
 
-fn get_calibration_and_configs(line: &str) -> (i32, Vec<i32>) {
+fn get_calibration_and_configs(line: &str) -> (i64, Vec<i64>) {
     let parts: Vec<&str> = line.split(':').collect();
-    let calib: i32 = parts[0].trim().parse().unwrap();
-    let configs: Vec<i32> = parts[1]
+    let calib: i64 = parts[0].trim().parse().unwrap();
+    let configs: Vec<i64> = parts[1]
         .trim()
         .split_whitespace()
         .map(|s| s.parse().unwrap())
@@ -69,7 +69,7 @@ fn get_calibration_and_configs(line: &str) -> (i32, Vec<i32>) {
     (calib, configs)
 }
 
-fn get_total_valid_calibrations(input: &str) -> i32 {
+fn get_total_valid_calibrations(input: &str) -> i64 {
     let mut total = 0;
 
     for line in input.lines() {
