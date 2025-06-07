@@ -2,6 +2,8 @@
 // operators "+" and "*"
 // then add up all the one that is correct.
 
+use crate::utils;
+
 fn is_valid_config(calib: i64, configs: Vec<i64>) -> bool {
     // in configs, calculate using 2 operators (+ and *)
     // if either is exceeding the calib, return false
@@ -80,6 +82,16 @@ fn get_total_valid_calibrations(input: &str) -> i64 {
     }
 
     total
+}
+
+pub fn run() {
+    match utils::file_reader::read_file("day7.txt") {
+        Ok(contents) => {
+            let total = get_total_valid_calibrations(contents.as_str());
+            println!("Total valid calibrations: {}", total);
+        }
+        Err(e) => println!("Err: {}", e),
+    }
 }
 
 #[cfg(test)]
