@@ -4,7 +4,7 @@
 
 use crate::utils;
 
-fn is_valid_config(calib: i64, configs: Vec<i64>) -> bool {
+fn is_valid_config(calib: i64, configs: &Vec<i64>) -> bool {
     let permutations = generate_permutations(configs.len());
 
     for ops in permutations {
@@ -67,7 +67,7 @@ fn get_total_valid_calibrations(input: &str) -> i64 {
 
     for line in input.lines() {
         let (calib, configs) = get_calibration_and_configs(line).unwrap();
-        if is_valid_config(calib, configs) {
+        if is_valid_config(calib, &configs) {
             total += calib;
         }
     }
@@ -103,15 +103,15 @@ mod test {
         // 192: 17 8 14
         // 21037: 9 7 18 13
         // 292: 11 6 16 20 (true)
-        assert_eq!(is_valid_config(190, vec![10, 19]), true);
-        assert_eq!(is_valid_config(3267, vec![81, 40, 27]), true);
-        assert_eq!(is_valid_config(83, vec![17, 5]), false);
-        assert_eq!(is_valid_config(156, vec![15, 6]), false);
-        assert_eq!(is_valid_config(7290, vec![6, 8, 6, 15]), false);
-        assert_eq!(is_valid_config(161011, vec![16, 10, 13]), false);
-        assert_eq!(is_valid_config(192, vec![17, 8, 14]), false);
-        assert_eq!(is_valid_config(292, vec![11, 6, 16, 20]), true);
-        assert_eq!(is_valid_config(21037, vec![9, 7, 18, 13]), false);
+        assert_eq!(is_valid_config(190, &vec![10, 19]), true);
+        assert_eq!(is_valid_config(3267, &vec![81, 40, 27]), true);
+        assert_eq!(is_valid_config(83, &vec![17, 5]), false);
+        assert_eq!(is_valid_config(156, &vec![15, 6]), false);
+        assert_eq!(is_valid_config(7290, &vec![6, 8, 6, 15]), false);
+        assert_eq!(is_valid_config(161011, &vec![16, 10, 13]), false);
+        assert_eq!(is_valid_config(192, &vec![17, 8, 14]), false);
+        assert_eq!(is_valid_config(292, &vec![11, 6, 16, 20]), true);
+        assert_eq!(is_valid_config(21037, &vec![9, 7, 18, 13]), false);
     }
 
     #[test]
