@@ -45,22 +45,28 @@ fn generate_permutations(num_configs: usize) -> Vec<Vec<char>> {
         .collect()
 }
 
-fn get_calibration_and_configs(line: &str) -> (i64, Vec<i64>) {
+fn get_calibration_and_configs(line: &str) -> Result<(i64, Vec<i64>), String> {
     let parts: Vec<&str> = line.split(':').collect();
-    let calib: i64 = parts[0].trim().parse().unwrap();
-    let configs: Vec<i64> = parts[1]
+    if parts.len() != 2 {
+        return Err(format!("Invalid line format: {}", line));
+    }
+    let calib = parts[0]
+        .trim()
+        .parse::<i64>()
+        .map_err(|_| "Invalid calibration value")?;
+    let configs = parts[1]
         .trim()
         .split_whitespace()
-        .map(|s| s.parse().unwrap())
-        .collect();
-    (calib, configs)
+        .map(|s| s.parse::<i64>().map_err(|_| "Invalid config value"))
+        .collect::<Result<Vec<i64>, _>>()?;
+    Ok((calib, configs))
 }
 
 fn get_total_valid_calibrations(input: &str) -> i64 {
     let mut total = 0;
 
     for line in input.lines() {
-        let (calib, configs) = get_calibration_and_configs(line);
+        let (calib, configs) = get_calibration_and_configs(line).unwrap();
         if is_valid_config(calib, configs) {
             total += calib;
         }
@@ -131,12 +137,12 @@ mod test {
     #[test]
     fn test_get_calibration_and_configs() {
         let line = "190: 10 19";
-        let (calib, configs) = get_calibration_and_configs(line);
+        let (calib, configs) = get_calibration_and_configs(line).unwrap();
         assert_eq!(calib, 190);
         assert_eq!(configs, vec![10, 19]);
 
         let line = "3267: 81 40 27";
-        let (calib, configs) = get_calibration_and_configs(line);
+        let (calib, configs) = get_calibration_and_configs(line).unwrap();
         assert_eq!(calib, 3267);
         assert_eq!(configs, vec![81, 40, 27]);
     }
