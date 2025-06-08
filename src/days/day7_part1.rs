@@ -63,16 +63,13 @@ fn get_calibration_and_configs(line: &str) -> Result<(i64, Vec<i64>), String> {
 }
 
 fn get_total_valid_calibrations(input: &str) -> i64 {
-    let mut total = 0;
-
-    for line in input.lines() {
-        let (calib, configs) = get_calibration_and_configs(line).unwrap();
-        if is_valid_config(calib, &configs) {
-            total += calib;
-        }
-    }
-
-    total
+    input
+        .lines()
+        .filter_map(|line| match get_calibration_and_configs(line) {
+            Ok((calib, configs)) if is_valid_config(calib, &configs) => Some(calib),
+            _ => None,
+        })
+        .sum()
 }
 
 pub fn run() {
