@@ -5,32 +5,25 @@
 use crate::utils;
 
 fn is_valid_config(calib: i64, configs: Vec<i64>) -> bool {
-    // in configs, calculate using 2 operators (+ and *)
-    // if either is exceeding the calib, return false
-    // end loop, total is equal calib, return true else false
-
-    let mut cfg_ops_result = configs[0];
-
     let permutations = generate_permutations(configs.len());
 
     for ops in permutations {
-        cfg_ops_result = configs[0];
+        let mut result = configs[0];
         for (i, op) in ops.iter().enumerate() {
             if i + 1 < configs.len() {
-                match *op {
-                    '+' => cfg_ops_result += configs[i + 1],
-                    '*' => cfg_ops_result *= configs[i + 1],
+                match op {
+                    '+' => result += configs[i + 1],
+                    '*' => result *= configs[i + 1],
                     _ => unreachable!(),
                 }
             }
         }
-
-        if cfg_ops_result == calib {
+        if result == calib {
             return true;
         }
     }
 
-    cfg_ops_result == calib
+    false
 }
 
 // function to write plus or multiply permutations based on the number of configs minus 1
