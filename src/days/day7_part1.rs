@@ -18,8 +18,8 @@ fn is_valid_config(calib: i64, configs: Vec<i64>) -> bool {
         for (i, op) in ops.iter().enumerate() {
             if i + 1 < configs.len() {
                 match *op {
-                    "+" => cfg_ops_result += configs[i + 1],
-                    "*" => cfg_ops_result *= configs[i + 1],
+                    '+' => cfg_ops_result += configs[i + 1],
+                    '*' => cfg_ops_result *= configs[i + 1],
                     _ => unreachable!(),
                 }
             }
@@ -41,23 +41,15 @@ fn is_valid_config(calib: i64, configs: Vec<i64>) -> bool {
 // 1: [ "+", "*" ]
 // 2: [ "*", "+" ]
 // 3: [ "*", "*" ]
-fn generate_permutations(num_configs: usize) -> Vec<Vec<&'static str>> {
-    let mut permutations = Vec::new();
+fn generate_permutations(num_configs: usize) -> Vec<Vec<char>> {
     let total_permutations = 1 << (num_configs - 1); // 2^(num_configs - 1)
-
-    for i in 0..total_permutations {
-        let mut ops = Vec::new();
-        for j in 0..(num_configs - 1) {
-            if (i & (1 << j)) != 0 {
-                ops.push("*");
-            } else {
-                ops.push("+");
-            }
-        }
-        permutations.push(ops);
-    }
-
-    permutations
+    (0..total_permutations)
+        .map(|i| {
+            (0..(num_configs - 1))
+                .map(|j| if (i & (1 << j)) != 0 { '*' } else { '+' })
+                .collect()
+        })
+        .collect()
 }
 
 fn get_calibration_and_configs(line: &str) -> (i64, Vec<i64>) {
@@ -127,20 +119,20 @@ mod test {
     fn test_generate_permutations() {
         let permutations = generate_permutations(3);
         assert_eq!(permutations.len(), 4);
-        assert_eq!(permutations[0], vec!["+", "+"]);
-        assert_eq!(permutations[1], vec!["*", "+"]);
-        assert_eq!(permutations[2], vec!["+", "*"]);
-        assert_eq!(permutations[3], vec!["*", "*"]);
+        assert_eq!(permutations[0], vec!['+', '+']);
+        assert_eq!(permutations[1], vec!['*', '+']);
+        assert_eq!(permutations[2], vec!['+', '*']);
+        assert_eq!(permutations[3], vec!['*', '*']);
         let permutations = generate_permutations(4);
         assert_eq!(permutations.len(), 8);
-        assert_eq!(permutations[0], vec!["+", "+", "+"]);
-        assert_eq!(permutations[1], vec!["*", "+", "+"]);
-        assert_eq!(permutations[2], vec!["+", "*", "+"]);
-        assert_eq!(permutations[3], vec!["*", "*", "+"]);
-        assert_eq!(permutations[4], vec!["+", "+", "*"]);
-        assert_eq!(permutations[5], vec!["*", "+", "*"]);
-        assert_eq!(permutations[6], vec!["+", "*", "*"]);
-        assert_eq!(permutations[7], vec!["*", "*", "*"]);
+        assert_eq!(permutations[0], vec!['+', '+', '+']);
+        assert_eq!(permutations[1], vec!['*', '+', '+']);
+        assert_eq!(permutations[2], vec!['+', '*', '+']);
+        assert_eq!(permutations[3], vec!['*', '*', '+']);
+        assert_eq!(permutations[4], vec!['+', '+', '*']);
+        assert_eq!(permutations[5], vec!['*', '+', '*']);
+        assert_eq!(permutations[6], vec!['+', '*', '*']);
+        assert_eq!(permutations[7], vec!['*', '*', '*']);
     }
 
     #[test]
